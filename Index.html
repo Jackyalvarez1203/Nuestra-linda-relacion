@@ -45,31 +45,55 @@
             margin: 0;
         }
 
-        /* Contenedor para la imagen, usando <img> */
         .post-image {
             width: 100%;
             height: 350px;
             display: flex;
-            justify-content: center;  /* Centra la imagen si es más pequeña */
-            align-items: center;  /* Centra la imagen si es más pequeña */
+            justify-content: center;
+            align-items: center;
         }
 
         .post-image img {
-            width: 100%;    /* Asegura que la imagen no desborde */
-            height: 100%;   /* Asegura que la imagen se ajuste a la altura */
-            object-fit: contain; /* Asegura que la imagen se ajuste sin recortarse */
-            border-radius: 10px 10px 0 0; /* Bordes redondeados en la parte superior */
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 10px 10px 0 0;
         }
 
         .post-actions {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             padding: 10px;
         }
 
-        .post-actions img {
-            width: 20px;
-            height: 20px;
+        /* Estilos para los botones */
+        .like-button,
+        .comment-button,
+        .share-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            transition: color 0.3s ease;
+        }
+
+        /* Estilo para el botón de "Like" (corazón) */
+        .like-button {
+            color: #333;
+        }
+
+        .like-button.liked {
+            color: red;
+        }
+
+        /* Estilo para el botón de "Comentar" (globo de diálogo) */
+        .comment-button::before {
+            content: "💬";
+        }
+
+        /* Estilo para el botón de "Compartir" (flecha) */
+        .share-button::before {
+            content: "↗";
         }
 
         .caption {
@@ -97,7 +121,6 @@
 </head>
 <body>
 
-<!-- Contenedor de publicaciones -->
 <div id="posts-container"></div>
 
 <script>
@@ -106,81 +129,80 @@
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg", // Aquí coloca la URL de tu imagen de avatar
-            imageUrl: "12102024.png", // Aquí coloca la URL de la imagen del post
-            caption: "Este es uno de los primeros recuerdos de cuando ibamos a volver a empezar nuestra linda relación a pesar de que a sido un poco jodido el estar alejado uno del otro se a logrado <3"
+            avatar: "perfil.jpg",
+            imageUrl: "12102024.png",
+            caption: "Este es uno de los primeros recuerdos de cuando íbamos a volver a empezar nuestra linda relación a pesar de que ha sido un poco jodido el estar alejado uno del otro se ha logrado <3"
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg", // Aquí coloca la URL de tu imagen de avatar
-            imageUrl: "M.jpg", // Aquí coloca la URL de la imagen del post
-            caption: "Aqui hace presencia una de las muchas fotos de un niño muy lindo llamado Marcos, a pesar de que el diga que no es lindo o muchas cosas más eso no es asi, el es muy lindo"
+            avatar: "perfil.jpg",
+            imageUrl: "M.jpg",
+            caption: "Aquí hace presencia una de las muchas fotos de un niño muy lindo llamado Marcos, a pesar de que él diga que no es lindo o muchas cosas más eso no es así, él es muy lindo"
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg", // Aquí coloca la URL de tu imagen de avatar
-            imageUrl: "A.jpg", // Aquí coloca la URL de la imagen del post
-            caption: "Se que el hecho de estar detras de una pantalla pues es muy jodido, el no poder abrazar o besar a esa persona pero el tan solo ver sus lindas fotos me hacen muy feliz :D"
+            avatar: "perfil.jpg",
+            imageUrl: "A.jpg",
+            caption: "Sé que el hecho de estar detrás de una pantalla pues es muy jodido, el no poder abrazar o besar a esa persona pero el tan solo ver sus lindas fotos me hacen muy feliz :D"
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg", // Aquí coloca la URL de tu imagen de avatar
-            imageUrl: "R.jpg", // Aquí coloca la URL de la imagen del post
-            caption: "Amo esos ojitos hermosos, amo el solo hecho de que este chico exista, el se a convertido en alguien muy especial para mi en tan poco tiempo"
+            avatar: "perfil.jpg",
+            imageUrl: "R.jpg",
+            caption: "Amo esos ojitos hermosos, amo el solo hecho de que este chico exista, él se ha convertido en alguien muy especial para mí en tan poco tiempo"
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg", // Aquí coloca la URL de tu imagen de avatar
-            imageUrl: "O.jpg", // Aquí coloca la URL de la imagen del post
-            caption: "Agradecer al de arriba si nos escucha y esta allí, por el hecho de que este niño tan lindo sea mi pareja <3"
+            avatar: "perfil.jpg",
+            imageUrl: "O.jpg",
+            caption: "Agradecer al de arriba si nos escucha y está allí, por el hecho de que este niño tan lindo sea mi pareja <3"
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg", // Aquí coloca la URL de tu imagen de avatar
-            imageUrl: "S.jpg", // Aquí coloca la URL de la imagen del post
-            caption: "❤️‍🩹"
+            avatar: "perfil.jpg",
+            imageUrl: "S.jpg",
+            caption: "❤‍🩹"
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg", // Aquí coloca la URL de tu imagen de avatar
-            imageUrl: "E.jpg", // Aquí coloca la URL de la imagen del post
+            avatar: "perfil.jpg",
+            imageUrl: "E.jpg",
             caption: "😻😻😻"
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg", // Aquí coloca la URL de tu imagen de avatar
-            imageUrl: "Ajedrez.jpg", // Aquí coloca la URL de la imagen del post
-            caption: "Amo el hecho de jugar ajedrez aunque casi siempre gano (pero el a demostrado de que a pesar que pierda pues le gusta el jugar conmigo aunque solo sea un jueguito donde yo tenga experiencia XD)"
+            avatar: "perfil.jpg",
+            imageUrl: "Ajedrez.jpg",
+            caption: "Amo el hecho de jugar ajedrez aunque casi siempre gano (pero él ha demostrado que a pesar de que pierda, le gusta jugar conmigo aunque solo sea un jueguito donde yo tenga experiencia XD)"
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg", // Aquí coloca la URL de tu imagen de avatar
-            imageUrl: "Dots2.jpg", // Aquí coloca la URL de la imagen del post
-            caption: "Los lindos recuerdos que llevamos en Dots son lo mejor, tambien el hecho de que si me encuentro mal pues poder ver su linda carita <´3"
+            avatar: "perfil.jpg",
+            imageUrl: "Dots2.jpg",
+            caption: "Los lindos recuerdos que llevamos en Dots son lo mejor, también el hecho de que si me encuentro mal, pues poder ver su linda carita <3"
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg", // Aquí coloca la URL de tu imagen de avatar
-            imageUrl: "Llamada.jpg", // Aquí coloca la URL de la imagen del post
-            caption: "El hecho de hacer llamadas es muy lindo al escuchar su voz aunque a veces no sepamos ni que decir (y hasta llegarme a quedar dormido y sentirme acompañado atraves de una pantalla)"
+            avatar: "perfil.jpg",
+            imageUrl: "Llamada.jpg",
+            caption: "El hecho de hacer llamadas es muy lindo al escuchar su voz aunque a veces no sepamos ni qué decir (y hasta llegarme a quedar dormido y sentirme acompañado a través de una pantalla)"
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg", // Aquí coloca la URL de tu imagen de avatar
-            imageUrl: "Mundito.jpg", // Aquí coloca la URL de la imagen del post
+            avatar: "perfil.jpg",
+            imageUrl: "Mundito.jpg",
             caption: "Jugando munditos donde morimos mucho jsjsjs"
-        },
-       
+        }
     ];
 
     // Función para crear cada post
@@ -198,9 +220,9 @@
                     <img src="${post.imageUrl}" alt="Post Image" />
                 </div>
                 <div class="post-actions">
-                    <img src="Likes.jpg" alt="Like">
-                    <img src="comentarios.png" alt="Comment">
-                    <img src="compartir.png" alt="Share">
+                    <button class="like-button" onclick="likePost(this)">❤</button>
+                    <button class="comment-button" onclick="commentPost()">💬</button>
+                    <button class="share-button" onclick="sharePost()">↗</button>
                 </div>
                 <div class="caption">
                     <p><strong>${post.userHandle}</strong> ${post.caption}</p>
@@ -217,6 +239,19 @@
     posts.forEach(post => {
         postsContainer.innerHTML += createPost(post);
     });
+
+    // Funciones de ejemplo para botones
+    function likePost(button) {
+        button.classList.toggle('liked');
+    }
+
+    function commentPost() {
+        alert("Abriendo sección de comentarios...");
+    }
+
+    function sharePost() {
+        alert("Compartiendo publicación...");
+    }
 </script>
 
 </body>
