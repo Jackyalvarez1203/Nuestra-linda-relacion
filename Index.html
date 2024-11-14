@@ -117,6 +117,20 @@
             font-size: 14px;
             border-radius: 5px;
         }
+
+        /* Estilo para la lista de comentarios */
+        .comment-list {
+            margin-top: 10px;
+        }
+
+        .comment {
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comment p {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -202,19 +216,22 @@
             avatar: "perfil.jpg",
             imageUrl: "Mundito.jpg",
             caption: "Jugando munditos donde morimos mucho jsjsjs"
-        },
-        {
-            username: "Jack <3",
-            userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg",
-            imageUrl: "",
-            caption: ""
         }
-
     ];
 
+    // Recuperar los comentarios almacenados del localStorage (si existen)
+    function getStoredComments() {
+        let storedComments = localStorage.getItem("comments");
+        return storedComments ? JSON.parse(storedComments) : [];
+    }
+
+    // Guardar los comentarios en el localStorage
+    function saveComments(comments) {
+        localStorage.setItem("comments", JSON.stringify(comments));
+    }
+
     // Función para crear cada post
-    function createPost(post) {
+    function createPost(post, index, comments) {
         return `
             <div class="post">
                 <div class="header">
@@ -229,34 +246,84 @@
                 </div>
                 <div class="post-actions">
                     <button class="like-button" onclick="likePost(this)">❤</button>
-                    <button class="comment-button" onclick="commentPost()">💬</button>
+                    <button class="comment-button" onclick="toggleComments(${index})">💬</button>
                     <button class="share-button" onclick="sharePost()">↗</button>
                 </div>
                 <div class="caption">
                     <p><strong>${post.userHandle}</strong> ${post.caption}</p>
                 </div>
-                <div class="comments">
-                    <input type="text" placeholder="Escribe un comentario...">
+                <div class="comments" id="comments-${index}" style="display: none;">
+                    <input type="text" placeholder="Escribe un comentario..." id="comment-input-${index}">
+                    <div class="comment-list" id="comment-list-${index}">
+                        ${comments.map(comment => `<div class="comment"><p><strong>${comment.username}</strong>: ${comment.text}</p></div>`).join('')}
+                    </div>
                 </div>
             </div>
         `;
     }
 
-    // Insertar las publicaciones en el contenedor
-    const postsContainer = document.getElementById('posts-container');
-    posts.forEach(post => {
-        postsContainer.innerHTML += createPost(post);
+    // Función para mostrar/ocultar los comentarios
+    function toggleComments(index) {
+        const commentSection = document.getElementById(`comments-${index}`);
+        commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Función para agregar un comentario
+    function addComment(index) {
+        const commentInput = document.getElementById(`comment-input-${index}`);
+        const commentText = commentInput.value.trim();
+        if (commentText) {
+            const commentList = document.getElementById(`comment-list-${index}`);
+            const newComment = { username: "Usuario", text: commentText };
+
+            // Obtener comentarios existentes
+            const allComments = getStoredComments();
+
+            // Agregar el nuevo comentario a la lista de comentarios
+            if (!allComments[index]) {
+                allComments[index] = [];
+            }
+            allComments[index].push(newComment);
+
+            // Guardar los comentarios actualizados en localStorage
+            saveComments(allComments);
+
+            // Mostrar el comentario en la lista
+            const commentElement = document.createElement('div');
+            commentElement.classList.add('comment');
+            commentElement.innerHTML = `<p><strong>${newComment.username}</strong>: ${newComment.text}</p>`;
+            commentList.appendChild(commentElement);
+
+            // Limpiar el campo de texto
+            commentInput.value = '';
+        }
+    }
+
+    // Función para manejar la tecla Enter en el campo de comentario
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            const commentInput = event.target;
+            if (commentInput && commentInput.id.startsWith('comment-input-')) {
+                const postIndex = parseInt(commentInput.id.split('-')[2]);
+                addComment(postIndex);
+            }
+        }
     });
 
-    // Funciones de ejemplo para botones
+    // Insertar las publicaciones en el contenedor
+    const postsContainer = document.getElementById('posts-container');
+    const storedComments = getStoredComments();
+
+    posts.forEach((post, index) => {
+        postsContainer.innerHTML += createPost(post, index, storedComments[index] || []);
+    });
+
+    // Función para el "like" de la publicación
     function likePost(button) {
         button.classList.toggle('liked');
     }
 
-    function commentPost() {
-        alert("Abriendo sección de comentarios...");
-    }
-
+    // Función para compartir la publicación
     function sharePost() {
         alert("Compartiendo publicación...");
     }
