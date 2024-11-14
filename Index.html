@@ -3,331 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>😻Nuestra linda relación😻</title>
-    <link rel="icon" href="" type="image/x-icon"> 
+    <title>Iniciar sesión / Registro</title>
     <style>
-        /* Estilo básico para el post */
         body {
             font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            margin: 0;
-            padding: 0;
-        }
-
-        .post {
-            width: 350px;
-            background-color: rgb(255, 255, 255);
-            margin: 20px auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .header img {
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
-
-        .header .user-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header .user-info p {
-            margin: 0;
-        }
-
-        .post-image {
-            width: 100%;
-            height: 350px;
+            background-color: #f4f4f4;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        .post-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 10px 10px 0 0;
-        }
-
-        .post-actions {
-            display: flex;
-            justify-content: space-around;
-            padding: 10px;
-        }
-
-        /* Estilos para los botones */
-        .like-button,
-        .comment-button,
-        .share-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            transition: color 0.3s ease;
-        }
-
-        /* Estilo para el botón de "Like" (corazón) */
-        .like-button {
-            color: #333;
-        }
-
-        .like-button.liked {
-            color: rgb(255, 0, 0);
-        }
-
-        /* Estilo para el botón de "Comentar" (globo de diálogo) */
-        .comment-button::before {
-            content: "💬";
-        }
-
-        /* Estilo para el botón de "Compartir" (flecha) */
-        .share-button::before {
-            content: "↗";
-        }
-
-        .caption {
-            padding: 10px;
-        }
-
-        .caption p {
+            height: 100vh;
             margin: 0;
         }
-
-        .comments {
-            padding: 10px;
-            border-top: 1px solid #ddd;
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
         }
-
-        .comments input {
-            width: 95%;
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="password"], input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            width: 100%;
             padding: 10px;
+            background-color: #4CAF50;
+            color: white;
             border: none;
-            background-color: #fafafa;
-            font-size: 14px;
-            border-radius: 5px;
+            border-radius: 4px;
+            cursor: pointer;
         }
-
-        /* Estilo para la lista de comentarios */
-        .comment-list {
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .switch-form {
+            text-align: center;
             margin-top: 10px;
         }
-
-        .comment {
-            padding: 5px;
-            border-bottom: 1px solid #ddd;
+        .switch-form a {
+            color: #007BFF;
+            text-decoration: none;
         }
-
-        .comment p {
-            margin: 0;
+        .switch-form a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div id="login-form">
+            <h2>Iniciar sesión</h2>
+            <form id="login" action="javascript:void(0);" onsubmit="login()">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" name="username" required placeholder="Ingrese su usuario">
 
-<div id="posts-container"></div>
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" required placeholder="Ingrese su contraseña">
 
-<script>
-    // Datos de las publicaciones
-    const posts = [
-        {
-            username: "Jack <3",
-            userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg",
-            imageUrl: "12102024.png",
-            caption: "Este es uno de los primeros recuerdos de cuando íbamos a volver a empezar nuestra linda relación a pesar de que ha sido un poco jodido el estar alejado uno del otro se ha logrado <3"
-        },
-        {
-            username: "Jack <3",
-            userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg",
-            imageUrl: "M.jpg",
-            caption: "Aquí hace presencia una de las muchas fotos de un niño muy lindo llamado Marcos, a pesar de que él diga que no es lindo o muchas cosas más eso no es así, él es muy lindo"
-        },
-        {
-            username: "Jack <3",
-            userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg",
-            imageUrl: "A.jpg",
-            caption: "Sé que el hecho de estar detrás de una pantalla pues es muy jodido, el no poder abrazar o besar a esa persona pero el tan solo ver sus lindas fotos me hacen muy feliz :D"
-        },
-        {
-            username: "Jack <3",
-            userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg",
-            imageUrl: "R.jpg",
-            caption: "Amo esos ojitos hermosos, amo el solo hecho de que este chico exista, él se ha convertido en alguien muy especial para mí en tan poco tiempo"
-        },
-        {
-            username: "Jack <3",
-            userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg",
-            imageUrl: "O.jpg",
-            caption: "Agradecer al de arriba si nos escucha y está allí, por el hecho de que este niño tan lindo sea mi pareja <3"
-        },
-        {
-            username: "Jack <3",
-            userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg",
-            imageUrl: "S.jpg",
-            caption: "❤‍🩹"
-        },
-        {
-            username: "Jack <3",
-            userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg",
-            imageUrl: "E.jpg",
-            caption: "😻😻😻"
-        },
-        {
-            username: "Jack <3",
-            userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg",
-            imageUrl: "Ajedrez.jpg",
-            caption: "Amo el hecho de jugar ajedrez aunque casi siempre gano (pero él ha demostrado que a pesar de que pierda, le gusta jugar conmigo aunque solo sea un jueguito donde yo tenga experiencia XD)"
-        },
-        {
-            username: "Jack <3",
-            userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg",
-            imageUrl: "Dots2.jpg",
-            caption: "Los lindos recuerdos que llevamos en Dots son lo mejor, también el hecho de que si me encuentro mal, pues poder ver su linda carita <3"
-        },
-        {
-            username: "Jack <3",
-            userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg",
-            imageUrl: "Llamada.jpg",
-            caption: "El hecho de hacer llamadas es muy lindo al escuchar su voz aunque a veces no sepamos ni qué decir (y hasta llegarme a quedar dormido y sentirme acompañado a través de una pantalla)"
-        },
-        {
-            username: "Jack <3",
-            userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg",
-            imageUrl: "Mundito.jpg",
-            caption: "Jugando munditos donde morimos mucho jsjsjs"
-        }
-    ];
+                <input type="submit" value="Iniciar sesión">
+            </form>
 
-    // Recuperar los comentarios almacenados del localStorage (si existen)
-    function getStoredComments() {
-        let storedComments = localStorage.getItem("comments");
-        return storedComments ? JSON.parse(storedComments) : [];
-    }
-
-    // Guardar los comentarios en el localStorage
-    function saveComments(comments) {
-        localStorage.setItem("comments", JSON.stringify(comments));
-    }
-
-    // Función para crear cada post
-    function createPost(post, index, comments) {
-        return `
-            <div class="post">
-                <div class="header">
-                    <img src="${post.avatar}" alt="Avatar Usuario">
-                    <div class="user-info">
-                        <p><strong>${post.username}</strong></p>
-                        <p>${post.userHandle}</p>
-                    </div>
-                </div>
-                <div class="post-image">
-                    <img src="${post.imageUrl}" alt="Post Image" />
-                </div>
-                <div class="post-actions">
-                    <button class="like-button" onclick="likePost(this)">❤</button>
-                    <button class="comment-button" onclick="toggleComments(${index})">💬</button>
-                    <button class="share-button" onclick="sharePost()">↗</button>
-                </div>
-                <div class="caption">
-                    <p><strong>${post.userHandle}</strong> ${post.caption}</p>
-                </div>
-                <div class="comments" id="comments-${index}" style="display: none;">
-                    <input type="text" placeholder="Escribe un comentario..." id="comment-input-${index}">
-                    <div class="comment-list" id="comment-list-${index}">
-                        ${comments.map(comment => `<div class="comment"><p><strong>${comment.username}</strong>: ${comment.text}</p></div>`).join('')}
-                    </div>
-                </div>
+            <div class="switch-form">
+                <p>¿No tienes una cuenta? <a href="#" id="show-register">Regístrate aquí</a></p>
             </div>
-        `;
-    }
+        </div>
 
-    // Función para mostrar/ocultar los comentarios
-    function toggleComments(index) {
-        const commentSection = document.getElementById(`comments-${index}`);
-        commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
-    }
+        <div id="register-form" style="display:none;">
+            <h2>Registrarse</h2>
+            <form action="#" method="POST">
+                <label for="username-reg">Usuario</label>
+                <input type="text" id="username-reg" name="username" required placeholder="Elige un usuario">
 
-    // Función para agregar un comentario
-    function addComment(index) {
-        const commentInput = document.getElementById(`comment-input-${index}`);
-        const commentText = commentInput.value.trim();
-        if (commentText) {
-            const commentList = document.getElementById(`comment-list-${index}`);
-            const newComment = { username: "Usuario", text: commentText };
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" required placeholder="Ingrese su correo electrónico">
 
-            // Obtener comentarios existentes
-            const allComments = getStoredComments();
+                <label for="password-reg">Contraseña</label>
+                <input type="password" id="password-reg" name="password" required placeholder="Elige una contraseña">
 
-            // Agregar el nuevo comentario a la lista de comentarios
-            if (!allComments[index]) {
-                allComments[index] = [];
+                <label for="confirm-password">Confirmar contraseña</label>
+                <input type="password" id="confirm-password" name="confirm-password" required placeholder="Repite la contraseña">
+
+                <input type="submit" value="Registrarse">
+            </form>
+
+            <div class="switch-form">
+                <p>¿Ya tienes una cuenta? <a href="#" id="show-login">Inicia sesión aquí</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cambiar entre el formulario de login y registro
+        document.getElementById('show-register').addEventListener('click', function() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+        });
+
+        document.getElementById('show-login').addEventListener('click', function() {
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+        });
+
+        // Función para simular el inicio de sesión y redirigir a Pagina.html
+        function login() {
+            // Obtener los valores del formulario de login
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Aquí deberías agregar validaciones o verificar las credenciales, por ejemplo, con una API.
+            // Por ahora, simularemos una validación exitosa si los campos no están vacíos.
+
+            if (username && password) {
+                // Redirigir a "Pagina.html" al hacer login exitoso
+                window.location.href = "Pagina.html";
+            } else {
+                alert("Por favor ingrese un usuario y contraseña válidos.");
             }
-            allComments[index].push(newComment);
-
-            // Guardar los comentarios actualizados en localStorage
-            saveComments(allComments);
-
-            // Mostrar el comentario en la lista
-            const commentElement = document.createElement('div');
-            commentElement.classList.add('comment');
-            commentElement.innerHTML = `<p><strong>${newComment.username}</strong>: ${newComment.text}</p>`;
-            commentList.appendChild(commentElement);
-
-            // Limpiar el campo de texto
-            commentInput.value = '';
         }
-    }
-
-    // Función para manejar la tecla Enter en el campo de comentario
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter') {
-            const commentInput = event.target;
-            if (commentInput && commentInput.id.startsWith('comment-input-')) {
-                const postIndex = parseInt(commentInput.id.split('-')[2]);
-                addComment(postIndex);
-            }
-        }
-    });
-
-    // Insertar las publicaciones en el contenedor
-    const postsContainer = document.getElementById('posts-container');
-    const storedComments = getStoredComments();
-
-    posts.forEach((post, index) => {
-        postsContainer.innerHTML += createPost(post, index, storedComments[index] || []);
-    });
-
-    // Función para el "like" de la publicación
-    function likePost(button) {
-        button.classList.toggle('liked');
-    }
-
-    // Función para compartir la publicación
-    function sharePost() {
-        alert("Compartiendo publicación...");
-    }
-</script>
-
+    </script>
 </body>
 </html>
