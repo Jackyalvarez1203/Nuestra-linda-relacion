@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>😻Nuestra linda relación😻</title>
-    <link rel="icon" href="" type="image/x-icon"> 
+    <link rel="icon" href="" type="image/x-icon">
     <style>
-        /* Estilo básico para el post */
+        /* Estilos básicos */
         body {
             font-family: Arial, sans-serif;
             background-color: #ffffff;
@@ -14,14 +14,17 @@
             padding: 0;
         }
 
+        /* Post */
         .post {
             width: 350px;
             background-color: rgb(255, 255, 255);
             margin: 20px auto;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
+        /* Cabecera de cada post (foto de perfil y nombre del usuario) */
         .header {
             display: flex;
             align-items: center;
@@ -45,28 +48,43 @@
             margin: 0;
         }
 
-        .post-image {
+        /* Carrusel de medios */
+        .media-carousel {
             width: 100%;
             height: 350px;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            overflow: hidden;
+            position: relative;
+            border-radius: 10px;
         }
 
-        .post-image img {
+        .media-carousel .media-item {
+            display: none;
+            flex-shrink: 0;
             width: 100%;
             height: 100%;
             object-fit: contain;
-            border-radius: 10px 10px 0 0;
+            text-align: center;
         }
 
+        .media-carousel .active {
+            display: block;
+        }
+
+        /* Estilo para los medios (video/audio) */
+        .media-item video,
+        .media-item audio {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Botones de acción (like, comment, share) */
         .post-actions {
             display: flex;
             justify-content: space-around;
             padding: 10px;
         }
 
-        /* Estilos para los botones */
         .like-button,
         .comment-button,
         .share-button {
@@ -77,7 +95,6 @@
             transition: color 0.3s ease;
         }
 
-        /* Estilo para el botón de "Like" (corazón) */
         .like-button {
             color: #333;
         }
@@ -86,16 +103,7 @@
             color: rgb(255, 0, 0);
         }
 
-        /* Estilo para el botón de "Comentar" (globo de diálogo) */
-        .comment-button::before {
-            content: "💬";
-        }
-
-        /* Estilo para el botón de "Compartir" (flecha) */
-        .share-button::before {
-            content: "↗";
-        }
-
+        /* Estilo del pie del post (caption y comentarios) */
         .caption {
             padding: 10px;
         }
@@ -104,6 +112,7 @@
             margin: 0;
         }
 
+        /* Estilo de los comentarios */
         .comments {
             padding: 10px;
             border-top: 1px solid #ddd;
@@ -118,7 +127,6 @@
             border-radius: 5px;
         }
 
-        /* Estilo para la lista de comentarios */
         .comment-list {
             margin-top: 10px;
         }
@@ -131,109 +139,174 @@
         .comment p {
             margin: 0;
         }
+
+        /* Estilo para la ventana de compartir */
+        .share-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .share-popup .popup-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .share-popup .popup-content a {
+            margin: 10px;
+            font-size: 20px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
     </style>
 </head>
 <body>
 
 <div id="posts-container"></div>
 
+<!-- Ventana emergente para compartir -->
+<div class="share-popup" id="sharePopup">
+    <div class="popup-content">
+        <p>Compartir publicación</p>
+        <a href="https://wa.me/?text=Mira la pagina Nuestra linda relación https://nuestra-linda-relacion.netlify.app/pagina" target="_blank">WhatsApp</a>
+        <a href="https://www.instagram.com/sharer/sharer.php?u=https://nuestra-linda-relacion.netlify.app/pagina" target="_blank">Instagram</a>
+        <a href="https://twitter.com/intent/tweet?text=Mira la pagina Nuestra linda relación&url=https://nuestra-linda-relacion.netlify.app/pagina" target="_blank">Twitter</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://nuestra-linda-relacion.netlify.app/pagina" target="_blank">Facebook</a>
+        <button onclick="closeSharePopup()">Cerrar</button>
+        <button onclick="closeSharePopup()">Cerrar</button>
+    </div>
+</div>
+
 <script>
     // Datos de las publicaciones
     const posts = [
-        {
+         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
             avatar: "perfil.jpg",
-            imageUrl: "12102024.png",
-            caption: "Este es uno de los primeros recuerdos de cuando íbamos a volver a empezar nuestra linda relación a pesar de que ha sido un poco jodido el estar alejado uno del otro se ha logrado <3"
+            media: [
+                { type: "image", url: "12102024.png" },
+                { type: "video", url: "video.mp4" },
+                { type: "audio", url: "audio.mp3" }
+            ],
+            caption: "Este es uno de los primeros recuerdos de cuando íbamos a volver a empezar nuestra linda relación a pesar de que ha sido un poco jodido el estar alejado uno del otro se ha logrado <3",
+            link: "https://nuestra-linda-relacion.netlify.app/pagina#post-1"  // Enlace del post específico
+        }, 
+       {
+            username: "Jack <3",
+            userHandle: "@Jack_morning_star_",
+            avatar: "perfil.jpg",
+            media: [{ type: "image", url: "M.jpg" }],
+            caption: "Aquí hace presencia una de las muchas fotos de un niño muy lindo llamado Marcos, a pesar de que él diga que no es lindo o muchas cosas más eso no es así, él es muy lindo",
+            link: "https://nuestra-linda-relacion.netlify.app/pagina#post-2" 
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
             avatar: "perfil.jpg",
-            imageUrl: "M.jpg",
-            caption: "Aquí hace presencia una de las muchas fotos de un niño muy lindo llamado Marcos, a pesar de que él diga que no es lindo o muchas cosas más eso no es así, él es muy lindo"
+            media: [{ type: "image", url: "A.jpg" }],
+            caption: "Sé que el hecho de estar detrás de una pantalla pues es muy jodido, el no poder abrazar o besar a esa persona pero el tan solo ver sus lindas fotos me hacen muy feliz :D",
+            link: "https://nuestra-linda-relacion.netlify.app/pagina#post-3" 
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
             avatar: "perfil.jpg",
-            imageUrl: "A.jpg",
-            caption: "Sé que el hecho de estar detrás de una pantalla pues es muy jodido, el no poder abrazar o besar a esa persona pero el tan solo ver sus lindas fotos me hacen muy feliz :D"
+            media: [{ type: "image", url: "R.jpg" }],
+            caption: "Amo esos ojitos hermosos, amo el solo hecho de que este chico exista, él se ha convertido en alguien muy especial para mí en tan poco tiempo",
+            link: "https://nuestra-linda-relacion.netlify.app/pagina#post-4" 
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
             avatar: "perfil.jpg",
-            imageUrl: "R.jpg",
-            caption: "Amo esos ojitos hermosos, amo el solo hecho de que este chico exista, él se ha convertido en alguien muy especial para mí en tan poco tiempo"
+            media: [{ type: "image", url: "O.jpg" }],
+            caption: "Agradecer al de arriba si nos escucha y está allí, por el hecho de que este niño tan lindo sea mi pareja <3",
+            link: "https://nuestra-linda-relacion.netlify.app/pagina#post-5" 
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
             avatar: "perfil.jpg",
-            imageUrl: "O.jpg",
-            caption: "Agradecer al de arriba si nos escucha y está allí, por el hecho de que este niño tan lindo sea mi pareja <3"
+            media: [{ type: "image", url: "S.jpg" }],
+            caption: "❤‍🩹",
+            link: "https://nuestra-linda-relacion.netlify.app/pagina#post-6" 
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
             avatar: "perfil.jpg",
-            imageUrl: "S.jpg",
-            caption: "❤‍🩹"
+            media: [{ type: "image", url: "E.jpg" }],
+            caption: "😻😻😻",
+            link: "https://nuestra-linda-relacion.netlify.app/pagina#post-7" 
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
             avatar: "perfil.jpg",
-            imageUrl: "E.jpg",
-            caption: "😻😻😻"
+            media: [{ type: "image", url: "Ajedrez.jpg" }],
+            caption: "Amo el hecho de jugar ajedrez aunque casi siempre gano (pero él ha demostrado que a pesar de que pierda, le gusta jugar conmigo aunque solo sea un jueguito donde yo tenga experiencia XD)",
+            link: "https://nuestra-linda-relacion.netlify.app/pagina#post-8" 
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
             avatar: "perfil.jpg",
-            imageUrl: "Ajedrez.jpg",
-            caption: "Amo el hecho de jugar ajedrez aunque casi siempre gano (pero él ha demostrado que a pesar de que pierda, le gusta jugar conmigo aunque solo sea un jueguito donde yo tenga experiencia XD)"
+            media: [{ type: "image", url: "Dots2.jpg" }],
+            caption: "Los lindos recuerdos que llevamos en Dots son lo mejor, también el hecho de que si me encuentro mal, pues poder ver su linda carita <3",
+            link: "https://nuestra-linda-relacion.netlify.app/pagina#post-9" 
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
             avatar: "perfil.jpg",
-            imageUrl: "Dots2.jpg",
-            caption: "Los lindos recuerdos que llevamos en Dots son lo mejor, también el hecho de que si me encuentro mal, pues poder ver su linda carita <3"
+            media: [{ type: "image", url: "Llamada.jpg" }],
+            caption: "El hecho de hacer llamadas es muy lindo al escuchar su voz aunque a veces no sepamos ni qué decir (y hasta llegarme a quedar dormido y sentirme acompañado a través de una pantalla)",
+            link: "https://nuestra-linda-relacion.netlify.app/pagina#post-10" 
         },
         {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
             avatar: "perfil.jpg",
-            imageUrl: "Llamada.jpg",
-            caption: "El hecho de hacer llamadas es muy lindo al escuchar su voz aunque a veces no sepamos ni qué decir (y hasta llegarme a quedar dormido y sentirme acompañado a través de una pantalla)"
-        },
-        {
-            username: "Jack <3",
-            userHandle: "@Jack_morning_star_",
-            avatar: "perfil.jpg",
-            imageUrl: "Mundito.jpg",
-            caption: "Jugando munditos donde morimos mucho jsjsjs"
+            media: [{ type: "image", url: "Mundito.jpg" }],
+            caption: "Jugando munditos donde morimos mucho jsjsjs",
+            link: "https://nuestra-linda-relacion.netlify.app/pagina#post-11" 
         }
     ];
 
-    // Recuperar los comentarios almacenados del localStorage (si existen)
-    function getStoredComments() {
-        let storedComments = localStorage.getItem("comments");
-        return storedComments ? JSON.parse(storedComments) : [];
-    }
-
-    // Guardar los comentarios en el localStorage
-    function saveComments(comments) {
-        localStorage.setItem("comments", JSON.stringify(comments));
-    }
-
     // Función para crear cada post
-    function createPost(post, index, comments) {
+    function createPost(post, index) {
+        const mediaItems = post.media.map((item, i) => {
+            if (item.type === 'image') {
+                return `<img src="${item.url}" class="media-item ${i === 0 ? 'active' : ''}" alt="Post Image">`;
+            }
+            if (item.type === 'audio') {
+                return `<audio class="media-item ${i === 0 ? 'active' : ''}" controls>
+                            <source src="${item.url}" type="audio/mp3">
+                            Your browser does not support the audio element.
+                        </audio>`;
+            }
+            if (item.type === 'video') {
+                return `<video class="media-item ${i === 0 ? 'active' : ''}" controls>
+                            <source src="${item.url}" type="video/mp4">
+                            Your browser does not support the video element.
+                        </video>`;
+            }
+        }).join('');
+
         return `
-            <div class="post">
+            <div class="post" id="post-${index}">
                 <div class="header">
                     <img src="${post.avatar}" alt="Avatar Usuario">
                     <div class="user-info">
@@ -241,13 +314,13 @@
                         <p>${post.userHandle}</p>
                     </div>
                 </div>
-                <div class="post-image">
-                    <img src="${post.imageUrl}" alt="Post Image" />
+                <div class="media-carousel" onclick="changeMedia(${index})">
+                    ${mediaItems}
                 </div>
                 <div class="post-actions">
                     <button class="like-button" onclick="likePost(this)">❤</button>
                     <button class="comment-button" onclick="toggleComments(${index})">💬</button>
-                    <button class="share-button" onclick="sharePost()">↗</button>
+                    <button class="share-button" onclick="openSharePopup('${post.link}')">↗</button>
                 </div>
                 <div class="caption">
                     <p><strong>${post.userHandle}</strong> ${post.caption}</p>
@@ -255,67 +328,48 @@
                 <div class="comments" id="comments-${index}" style="display: none;">
                     <input type="text" placeholder="Escribe un comentario..." id="comment-input-${index}">
                     <div class="comment-list" id="comment-list-${index}">
-                        ${comments.map(comment => `<div class="comment"><p><strong>${comment.username}</strong>: ${comment.text}</p></div>`).join('')}
+                        <!-- Comentarios se insertarán aquí -->
                     </div>
                 </div>
             </div>
         `;
     }
 
-    // Función para mostrar/ocultar los comentarios
-    function toggleComments(index) {
-        const commentSection = document.getElementById(`comments-${index}`);
-        commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
+    // Función para cambiar el medio al hacer clic
+    function changeMedia(postIndex) {
+        const postElement = document.getElementById(`post-${postIndex}`);
+        const mediaItems = postElement.querySelectorAll('.media-item');
+        let activeIndex = Array.from(mediaItems).findIndex(item => item.classList.contains('active'));
+        let newIndex = activeIndex + 1;
+
+        if (newIndex >= mediaItems.length) newIndex = 0;
+
+        mediaItems[activeIndex].classList.remove('active');
+        mediaItems[newIndex].classList.add('active');
     }
 
-    // Función para agregar un comentario
-    function addComment(index) {
-        const commentInput = document.getElementById(`comment-input-${index}`);
-        const commentText = commentInput.value.trim();
-        if (commentText) {
-            const commentList = document.getElementById(`comment-list-${index}`);
-            const newComment = { username: "Usuario", text: commentText };
+    // Función para abrir el popup de compartir
+    function openSharePopup(link) {
+        const sharePopup = document.getElementById('sharePopup');
+        sharePopup.style.display = 'flex';
 
-            // Obtener comentarios existentes
-            const allComments = getStoredComments();
-
-            // Agregar el nuevo comentario a la lista de comentarios
-            if (!allComments[index]) {
-                allComments[index] = [];
-            }
-            allComments[index].push(newComment);
-
-            // Guardar los comentarios actualizados en localStorage
-            saveComments(allComments);
-
-            // Mostrar el comentario en la lista
-            const commentElement = document.createElement('div');
-            commentElement.classList.add('comment');
-            commentElement.innerHTML = `<p><strong>${newComment.username}</strong>: ${newComment.text}</p>`;
-            commentList.appendChild(commentElement);
-
-            // Limpiar el campo de texto
-            commentInput.value = '';
-        }
+        // Actualizar los enlaces para compartir el post específico
+        document.querySelector('.share-popup a[href^="https://wa.me"]').href = `https://wa.me/?text=Mira la pagina 😻Nuestra linda relación😻 ${link}`;
+        document.querySelector('.share-popup a[href^="https://www.instagram.com"]').href = `https://www.instagram.com/sharer/sharer.php?u=${link}`;
+        document.querySelector('.share-popup a[href^="https://twitter.com"]').href = `https://twitter.com/intent/tweet?text=Mira la pagina 😻Nuestra linda relación😻&url=${link}`;
+        document.querySelector('.share-popup a[href^="https://www.facebook.com"]').href = `https://www.facebook.com/sharer/sharer.php?u=${link}`;
     }
 
-    // Función para manejar la tecla Enter en el campo de comentario
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter') {
-            const commentInput = event.target;
-            if (commentInput && commentInput.id.startsWith('comment-input-')) {
-                const postIndex = parseInt(commentInput.id.split('-')[2]);
-                addComment(postIndex);
-            }
-        }
-    });
+    // Función para cerrar el popup de compartir
+    function closeSharePopup() {
+        const sharePopup = document.getElementById('sharePopup');
+        sharePopup.style.display = 'none';
+    }
 
     // Insertar las publicaciones en el contenedor
     const postsContainer = document.getElementById('posts-container');
-    const storedComments = getStoredComments();
-
     posts.forEach((post, index) => {
-        postsContainer.innerHTML += createPost(post, index, storedComments[index] || []);
+        postsContainer.innerHTML += createPost(post, index);
     });
 
     // Función para el "like" de la publicación
@@ -323,9 +377,10 @@
         button.classList.toggle('liked');
     }
 
-    // Función para compartir la publicación
-    function sharePost() {
-        alert("Compartiendo publicación...");
+    // Función para mostrar/ocultar los comentarios
+    function toggleComments(index) {
+        const commentSection = document.getElementById(`comments-${index}`);
+        commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
     }
 </script>
 

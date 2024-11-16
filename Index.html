@@ -63,6 +63,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- Formulario de inicio de sesión -->
         <div id="login-form">
             <h2>Iniciar sesión</h2>
             <form id="login" action="javascript:void(0);" onsubmit="login()">
@@ -80,9 +81,10 @@
             </div>
         </div>
 
+        <!-- Formulario de registro -->
         <div id="register-form" style="display:none;">
             <h2>Registrarse</h2>
-            <form action="#" method="POST">
+            <form action="javascript:void(0);" onsubmit="register()">
                 <label for="username-reg">Usuario</label>
                 <input type="text" id="username-reg" name="username" required placeholder="Elige un usuario">
 
@@ -118,20 +120,35 @@
 
         // Función para simular el inicio de sesión y redirigir a Pagina.html
         function login() {
-            // Obtener los valores del formulario de login
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // Aquí deberías agregar validaciones o verificar las credenciales, por ejemplo, con una API.
-            // Por ahora, simularemos una validación exitosa si los campos no están vacíos.
-
             if (username && password) {
-                // Redirigir a "Pagina.html" al hacer login exitoso
                 window.location.href = "Pagina.html";
             } else {
                 alert("Por favor ingrese un usuario y contraseña válidos.");
             }
         }
+
+        // Función para simular el registro y redirigir al formulario de login
+        function register() {
+            // Obtener los valores del formulario de registro
+            const username = document.getElementById('username-reg').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password-reg').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            // Validación simple para asegurarse de que la contraseña y la confirmación coinciden
+            if (password === confirmPassword && username && email) {
+                // Al registrarse correctamente, mostrar el formulario de login
+                alert("Registro exitoso. Ahora puedes iniciar sesión.");
+                document.getElementById('register-form').style.display = 'none';
+                document.getElementById('login-form').style.display = 'block';
+            } else {
+                alert("Las contraseñas no coinciden o faltan campos. Intenta de nuevo.");
+            }
+        }
     </script>
+
 </body>
 </html>
