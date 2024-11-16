@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>😻Nuestra linda relación😻</title>
     <link rel="icon" href="" type="image/x-icon">
+    <link rel="stylesheet" href="popup.css">
+    <!-- Cargar Font Awesome desde un CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         /* Estilos básicos */
         body {
@@ -169,6 +172,40 @@
             color: #007bff;
         }
 
+        /* Estilo para los iconos de las redes sociales */
+        .share-popup .popup-content .social-icons {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .share-popup .popup-content .social-icons a {
+            font-size: 40px;
+            color: #333;
+            transition: transform 0.3s ease;
+        }
+
+        .share-popup .popup-content .social-icons a:hover {
+            transform: scale(1.1);
+        }
+
+        /* Estilo para el botón de cerrar */
+        .share-popup .popup-content button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff4747;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .share-popup .popup-content button:hover {
+            background-color: #ff1f1f;
+        }
     </style>
 </head>
 <body>
@@ -178,12 +215,22 @@
 <!-- Ventana emergente para compartir -->
 <div class="share-popup" id="sharePopup">
     <div class="popup-content">
-        <p>Compartir publicación</p>
-        <a href="https://wa.me/?text=Mira la pagina Nuestra linda relación https://nuestra-linda-relacion.netlify.app/pagina" target="_blank">WhatsApp</a>
-        <a href="https://www.instagram.com/sharer/sharer.php?u=https://nuestra-linda-relacion.netlify.app/pagina" target="_blank">Instagram</a>
-        <a href="https://twitter.com/intent/tweet?text=Mira la pagina Nuestra linda relación&url=https://nuestra-linda-relacion.netlify.app/pagina" target="_blank">Twitter</a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https://nuestra-linda-relacion.netlify.app/pagina" target="_blank">Facebook</a>
-        <button onclick="closeSharePopup()">Cerrar</button>
+        <p>¡Comparte esta publicación!</p>
+        <!-- Iconos de redes sociales para compartir -->
+        <div class="social-icons">
+            <a href="#" id="share-whatsapp" onclick="shareOnWhatsApp()">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="#" id="share-facebook" onclick="shareOnFacebook()">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="#" id="share-twitter" onclick="shareOnTwitter()">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" id="share-instagram" onclick="shareOnInstagram()">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
         <button onclick="closeSharePopup()">Cerrar</button>
     </div>
 </div>
@@ -283,22 +330,23 @@
             caption: "Jugando munditos donde morimos mucho jsjsjs",
             link: "https://nuestra-linda-relacion.netlify.app/pagina#post-11" 
         }
+        // Más publicaciones...
     ];
 
     // Función para crear cada post
     function createPost(post, index) {
         const mediaItems = post.media.map((item, i) => {
             if (item.type === 'image') {
-                return `<img src="${item.url}" class="media-item ${i === 0 ? 'active' : ''}" alt="Post Image">`;
+                return `<img src="${item.url}" class="media-item ${i === 0 ? 'active' : ''}" alt="Post Image" onclick="navigateCarousel(${index}, 1)">`;
             }
             if (item.type === 'audio') {
-                return `<audio class="media-item ${i === 0 ? 'active' : ''}" controls>
+                return `<audio class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, 1)">
                             <source src="${item.url}" type="audio/mp3">
                             Your browser does not support the audio element.
                         </audio>`;
             }
             if (item.type === 'video') {
-                return `<video class="media-item ${i === 0 ? 'active' : ''}" controls>
+                return `<video class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, 1)">
                             <source src="${item.url}" type="video/mp4">
                             Your browser does not support the video element.
                         </video>`;
@@ -308,17 +356,17 @@
         return `
             <div class="post" id="post-${index}">
                 <div class="header">
-                    <img src="${post.avatar}" alt="Avatar Usuario">
+                    <img src="${post.avatar}" alt="Avatar">
                     <div class="user-info">
                         <p><strong>${post.username}</strong></p>
                         <p>${post.userHandle}</p>
                     </div>
                 </div>
-                <div class="media-carousel" onclick="changeMedia(${index})">
+                <div class="media-carousel">
                     ${mediaItems}
                 </div>
                 <div class="post-actions">
-                    <button class="like-button" onclick="likePost(this)">❤</button>
+                    <button class="like-button" onclick="likePost(this)">❤️</button>
                     <button class="comment-button" onclick="toggleComments(${index})">💬</button>
                     <button class="share-button" onclick="openSharePopup('${post.link}')">↗</button>
                 </div>
@@ -327,25 +375,20 @@
                 </div>
                 <div class="comments" id="comments-${index}" style="display: none;">
                     <input type="text" placeholder="Escribe un comentario..." id="comment-input-${index}">
-                    <div class="comment-list" id="comment-list-${index}">
-                        <!-- Comentarios se insertarán aquí -->
-                    </div>
+                    <div class="comment-list" id="comment-list-${index}"></div>
                 </div>
             </div>
         `;
     }
 
-    // Función para cambiar el medio al hacer clic
-    function changeMedia(postIndex) {
-        const postElement = document.getElementById(`post-${postIndex}`);
-        const mediaItems = postElement.querySelectorAll('.media-item');
-        let activeIndex = Array.from(mediaItems).findIndex(item => item.classList.contains('active'));
-        let newIndex = activeIndex + 1;
+    // Función para navegar entre los medios al hacer click
+    function navigateCarousel(index, direction) {
+        const mediaItems = document.querySelectorAll(`#post-${index} .media-item`);
+        let currentIndex = [...mediaItems].findIndex(item => item.classList.contains('active'));
+        currentIndex = (currentIndex + direction + mediaItems.length) % mediaItems.length;
 
-        if (newIndex >= mediaItems.length) newIndex = 0;
-
-        mediaItems[activeIndex].classList.remove('active');
-        mediaItems[newIndex].classList.add('active');
+        mediaItems.forEach(item => item.classList.remove('active'));
+        mediaItems[currentIndex].classList.add('active');
     }
 
     // Función para abrir el popup de compartir
@@ -354,10 +397,10 @@
         sharePopup.style.display = 'flex';
 
         // Actualizar los enlaces para compartir el post específico
-        document.querySelector('.share-popup a[href^="https://wa.me"]').href = `https://wa.me/?text=Mira la pagina 😻Nuestra linda relación😻 ${link}`;
-        document.querySelector('.share-popup a[href^="https://www.instagram.com"]').href = `https://www.instagram.com/sharer/sharer.php?u=${link}`;
-        document.querySelector('.share-popup a[href^="https://twitter.com"]').href = `https://twitter.com/intent/tweet?text=Mira la pagina 😻Nuestra linda relación😻&url=${link}`;
-        document.querySelector('.share-popup a[href^="https://www.facebook.com"]').href = `https://www.facebook.com/sharer/sharer.php?u=${link}`;
+        document.getElementById('share-whatsapp').href = `https://wa.me/?text=Mira la pagina 😻Nuestra linda relación😻 ${link}`;
+        document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${link}`;
+        document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=Mira la pagina 😻Nuestra linda relación😻&url=${link}`;
+        document.getElementById('share-instagram').href = `https://www.instagram.com/sharer/sharer.php?u=${link}`;
     }
 
     // Función para cerrar el popup de compartir
@@ -372,17 +415,16 @@
         postsContainer.innerHTML += createPost(post, index);
     });
 
-    // Función para el "like" de la publicación
+    // Función para dar like
     function likePost(button) {
         button.classList.toggle('liked');
     }
 
-    // Función para mostrar/ocultar los comentarios
+    // Función para mostrar u ocultar los comentarios
     function toggleComments(index) {
         const commentSection = document.getElementById(`comments-${index}`);
         commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
     }
 </script>
-
 </body>
 </html>
