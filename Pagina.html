@@ -528,10 +528,10 @@ function openSharePopup(link) {
     sharePopup.style.display = 'flex';
 
     // Actualizar los enlaces para compartir el post específico
-    document.getElementById('share-whatsapp').href = `https://wa.me/?text=Mira la pagina 😻Nuestra linda relación😻 ${link}`;
-    document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${link}`;
-    document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=Mira la pagina 😻Nuestra linda relación😻&url=${link}`;
-    document.getElementById('share-instagram').href = `https://www.instagram.com/sharer/sharer.php?u=${link}`;
+    document.getElementById('share-whatsapp').href = `https://wa.me/?text=Mira la página 😻Nuestra linda relación😻 ${link}`;
+    document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`;
+    document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=Mira la página 😻Nuestra linda relación😻&url=${encodeURIComponent(link)}`;
+    document.getElementById('share-instagram').href = `https://www.instagram.com/sharer/sharer.php?u=${encodeURIComponent(link)}`;
 }
 
 // Función para cerrar el popup de compartir
