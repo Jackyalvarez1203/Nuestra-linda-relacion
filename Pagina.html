@@ -6,17 +6,15 @@
     <title>😻Nuestra linda relación😻</title>
     <link rel="icon" href="" type="image/x-icon">
     <link rel="stylesheet" href="popup.css">
-    <!-- Cargar Font Awesome desde un CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        /* Estilos básicos */
         body {
-        font-family: Arial, sans-serif;
-        background-color: #ffffff;
-        margin: 0;
-        padding: 0;
-    }
- /* Post */
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
         .post {
             width: 350px;
             background-color: rgb(255, 255, 255);
@@ -26,7 +24,6 @@
             position: relative;
         }
 
-        /* Cabecera de cada post (foto de perfil y nombre del usuario) */
         .header {
             display: flex;
             align-items: center;
@@ -50,8 +47,7 @@
             margin: 0;
         }
 
-        /* Carrusel de medios */
-        .media-carousel {
+    .media-carousel {
         width: 100%;
         height: 350px;
         display: flex;
@@ -78,13 +74,12 @@
         width: 100%;
         height: 100%;
     }
-
-        /* Botones de acción (like, comment, share) */
         .post-actions {
             display: flex;
             justify-content: space-around;
             padding: 10px;
         }
+
         .like-button,
         .comment-button,
         .share-button {
@@ -103,7 +98,6 @@
             color: rgb(255, 0, 0);
         }
 
-        /* Estilo del pie del post (caption y comentarios) */
         .caption {
             padding: 10px;
         }
@@ -112,7 +106,6 @@
             margin: 0;
         }
 
-        /* Estilo de los comentarios */
         .comments {
             padding: 10px;
             border-top: 1px solid #ddd;
@@ -140,7 +133,6 @@
             margin: 0;
         }
 
-        /* Estilo para la ventana de compartir */
         .share-popup {
             position: fixed;
             top: 0;
@@ -169,7 +161,6 @@
             color: #007bff;
         }
 
-        /* Estilo para los iconos de las redes sociales */
         .share-popup .popup-content .social-icons {
             display: flex;
             justify-content: space-around;
@@ -187,7 +178,6 @@
             transform: scale(1.1);
         }
 
-        /* Estilo para el botón de cerrar */
         .share-popup .popup-content button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -209,11 +199,9 @@
 
 <div id="posts-container"></div>
 
-<!-- Ventana emergente para compartir -->
 <div class="share-popup" id="sharePopup">
     <div class="popup-content">
         <p>¡Comparte esta publicación!</p>
-        <!-- Iconos de redes sociales para compartir -->
         <div class="social-icons">
             <a href="#" id="share-whatsapp" onclick="shareOnWhatsApp()">
                 <i class="fab fa-whatsapp"></i>
@@ -233,8 +221,7 @@
 </div>
 
 <script>
-    // Datos de las publicaciones
-    const posts = [
+     const posts = [
          {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
@@ -335,60 +322,58 @@
             caption: "Amo los dias que hacemos llamada aunque me quede dormido a la mitad de ella <br> Amo que escuches todas las pendejadas que digo🥹 <br> Amo cada minuto donde hablo contigo, donde escucho tu linda voz, amo todo de ti <3",
             link: "https://nuestra-linda-relacion.netlify.app/pagina#post-12" 
         }
-        // Más publicaciones...
-        ];
 
-// Función para crear cada post
-function createPost(post, index) {
-    const mediaItems = post.media.map((item, i) => {
-        if (item.type === 'image') {
-            return `<img src="${item.url}" class="media-item ${i === 0 ? 'active' : ''}" alt="Post Image" onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">`;
-        }
-        if (item.type === 'audio') {
-            return `<audio class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
-                        <source src="${item.url}" type="audio/mp3">
-                        Your browser does not support the audio element.
-                    </audio>`;
-        }
-        if (item.type === 'video') {
-            return `<video class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
-                        <source src="${item.url}" type="video/mp4">
-                        Your browser does not support the video element.
-                    </video>`;
-        }
-    }).join('');
+    ];
 
-    return `
-        <div class="post" id="post-${index}">
-            <div class="header">
-                <img src="${post.avatar}" alt="Avatar">
-                <div class="user-info">
-                    <p><strong>${post.username}</strong></p>
-                    <p>${post.userHandle}</p>
+    let activeMediaIndex = 0; // Índice de la imagen/media activa en el carrusel
+
+    function createPost(post, index) {
+        const mediaItems = post.media.map((item, i) => {
+            if (item.type === 'image') {
+                return `<img src="${item.url}" class="media-item ${i === 0 ? 'active' : ''}" alt="Post Image" onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">`;
+            }
+            if (item.type === 'audio') {
+                return `<audio class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
+                            <source src="${item.url}" type="audio/mp3">
+                            Your browser does not support the audio element.
+                        </audio>`;
+            }
+            if (item.type === 'video') {
+                return `<video class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
+                            <source src="${item.url}" type="video/mp4">
+                            Your browser does not support the video element.
+                        </video>`;
+            }
+        }).join('');
+
+        return `
+            <div class="post" id="post-${index}">
+                <div class="header">
+                    <img src="${post.avatar}" alt="Avatar">
+                    <div class="user-info">
+                        <p><strong>${post.username}</strong></p>
+                        <p>${post.userHandle}</p>
+                    </div>
+                </div>
+                <div class="media-carousel" id="carousel-${index}">
+                    ${mediaItems}
+                </div>
+                <div class="post-actions">
+                    <button class="like-button" onclick="likePost(this)">❤</button>
+                    <button class="comment-button" onclick="toggleComments(${index})">💬</button>
+                    <button class="share-button" onclick="openSharePopup('${post.link}')">↪</button>
+                </div>
+                <div class="caption">
+                    <p><strong>${post.userHandle}</strong> ${post.caption}</p>
+                </div>
+                <div class="comments" id="comments-${index}" style="display: none;">
+                    <input type="text" placeholder="Escribe un comentario..." id="comment-input-${index}" onkeydown="handleCommentKeydown(event, ${index})">
+                    <div class="comment-list" id="comment-list-${index}"></div>
                 </div>
             </div>
-            <div class="media-carousel">
-                ${mediaItems}
-            </div>
-            <div class="post-actions">
-                <!-- Botón de Like -->
-                <button class="like-button" onclick="likePost(this)">❤️</button>
-                <button class="comment-button" onclick="toggleComments(${index})">💬</button>
-                <button class="share-button" onclick="openSharePopup('${post.link}')">↪</button>
-            </div>
-            <div class="caption">
-                <p><strong>${post.userHandle}</strong> ${post.caption}</p>
-            </div>
-            <div class="comments" id="comments-${index}" style="display: none;">
-                <input type="text" placeholder="Escribe un comentario..." id="comment-input-${index}" onkeydown="handleCommentKeydown(event, ${index})">
-                <div class="comment-list" id="comment-list-${index}"></div>
-            </div>
-        </div>
-    `;
-}
-
-
-let touchTimeout = null;  // Variable para el tiempo de retraso
+        `;
+    }
+    let touchTimeout = null;  // Variable para el tiempo de retraso
 
 // Función para navegar entre los elementos del carrusel
 function navigateCarousel(postIndex, event) {
@@ -431,115 +416,76 @@ function navigateCarousel(postIndex, event) {
         mediaItems[newIndex].classList.add('active');
     }, 300);  // Retraso de 200ms
 }
+ 
+    function openSharePopup(link) {
+        const sharePopup = document.getElementById('sharePopup');
+        sharePopup.style.display = 'flex';
 
-
-// Función para manejar el evento de tecla Enter para enviar el comentario
-function handleCommentKeydown(event, postIndex) {
-    const inputField = document.getElementById(`comment-input-${postIndex}`);
-    const commentList = document.getElementById(`comment-list-${postIndex}`);
-
-    if (event.key === "Enter" && inputField.value.trim()) {
-        // Evitar salto de línea
-        event.preventDefault();
-
-        // Obtener el comentario
-        const commentText = inputField.value.trim();
-
-        // Crear el comentario con el formato deseado
-        const commentElement = document.createElement("div");
-        commentElement.classList.add("comment");
-        commentElement.innerHTML = `<p><strong>Jack&lt;3</strong>: ${commentText}</p>`;  // Formato actualizado
-        commentList.appendChild(commentElement);
-
-        // Guardar el comentario en localStorage
-        saveComment(postIndex, commentText);
-
-        // Limpiar el campo de entrada
-        inputField.value = "";
-    }
-}
-
-// Función para guardar un comentario en localStorage
-function saveComment(postIndex, commentText) {
-    let comments = JSON.parse(localStorage.getItem('comments')) || {};
-    if (!comments[postIndex]) {
-        comments[postIndex] = [];
+        document.getElementById('share-whatsapp').href = `https://wa.me/?text=Mira la pagina 😻Nuestra linda relación😻 ${link}`;
+        document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${link}`;
+        document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=Mira la pagina 😻Nuestra linda relación😻&url=${link}`;
+        document.getElementById('share-instagram').href = `https://www.instagram.com/sharer/sharer.php?u=${link}`;
     }
 
-    // Guardamos el comentario con el nombre de usuario
-    comments[postIndex].push({
-        username: "Jack<3",  // El nombre del usuario que comentó
-        text: commentText    // El texto del comentario
-    });
-
-    // Guardamos todo de vuelta en localStorage
-    localStorage.setItem('comments', JSON.stringify(comments));
-}
-
-// Función para cargar los comentarios guardados en localStorage
-function loadComments(postIndex) {
-    const comments = JSON.parse(localStorage.getItem('comments')) || {};
-    const commentList = document.getElementById(`comment-list-${postIndex}`);
-
-    // Si hay comentarios para esta publicación
-    if (comments[postIndex]) {
-        comments[postIndex].forEach(comment => {
-            const commentElement = document.createElement("div");
-            commentElement.classList.add("comment");
-
-            // Mostrar el nombre del usuario y el comentario
-            commentElement.innerHTML = `<p><strong>${comment.username}</strong>: ${comment.text}</p>`;
-            commentList.appendChild(commentElement);
-        });
+    function closeSharePopup() {
+        document.getElementById('sharePopup').style.display = 'none';
     }
-}
 
+    function likePost(button) {
+        button.classList.toggle('liked');
+    }
 
-// Insertar las publicaciones en el contenedor
-const postsContainer = document.getElementById('posts-container');
-posts.forEach((post, index) => {
-    postsContainer.innerHTML += createPost(post, index);
-    loadComments(index);  // Cargar los comentarios previos de localStorage
-});
+    function toggleComments(postIndex) {
+        const commentsSection = document.getElementById(`comments-${postIndex}`);
+        commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+    }
 
-// Al cargar la página, mostrar solo el post correspondiente al fragmento de la URL
-document.addEventListener('DOMContentLoaded', function() {
-    const postHash = window.location.hash;  // Obtener el fragmento de la URL
-    const postIndex = postHash ? parseInt(postHash.replace('#post-', '')) : -1;  // Extraer el índice del post
+    function handleCommentKeydown(event, postIndex) {
+        if (event.key === 'Enter') {
+            const commentInput = document.getElementById(`comment-input-${postIndex}`);
+            const commentText = commentInput.value.trim();
 
-    if (postIndex >= 0 && postIndex < posts.length) {
-        // Ocultar todos los posts
-        const allPosts = document.querySelectorAll('.post');
-        allPosts.forEach(post => {
-            post.style.display = 'none';
-        });
-
-        // Mostrar solo el post correspondiente
-        const specificPost = document.getElementById(`post-${postIndex}`);
-        if (specificPost) {
-            specificPost.style.display = 'block';
+            if (commentText !== '') {
+                saveComment(postIndex, commentText);  // Guardar el comentario
+                loadComments(postIndex);              // Cargar los comentarios nuevamente
+                commentInput.value = '';              // Limpiar el campo de comentario
+            }
         }
     }
-});
 
-// Función para abrir el popup de compartir
-function openSharePopup(link) {
-    const sharePopup = document.getElementById('sharePopup');
-    sharePopup.style.display = 'flex';
+    function saveComment(postIndex, commentText) {
+        let comments = JSON.parse(localStorage.getItem('comments')) || {};
+        if (!comments[postIndex]) {
+            comments[postIndex] = [];
+        }
+        comments[postIndex].push({ username: 'Jack<3', text: commentText });
+        localStorage.setItem('comments', JSON.stringify(comments));
+    }
 
-    // Actualizar los enlaces para compartir el post específico
-    document.getElementById('share-whatsapp').href = `https://wa.me/?text=Mira la página 😻Nuestra linda relación😻 ${link}`;
-    document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`;
-    document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=Mira la página 😻Nuestra linda relación😻&url=${encodeURIComponent(link)}`;
-    document.getElementById('share-instagram').href = `https://www.instagram.com/sharer/sharer.php?u=${encodeURIComponent(link)}`;
-}
+    function loadComments(postIndex) {
+        const comments = JSON.parse(localStorage.getItem('comments')) || {};
+        const commentList = document.getElementById(`comment-list-${postIndex}`);
+        commentList.innerHTML = '';
 
-// Función para cerrar el popup de compartir
-function closeSharePopup() {
-    const sharePopup = document.getElementById('sharePopup');
-    sharePopup.style.display = 'none';
-}
+        if (comments[postIndex]) {
+            comments[postIndex].forEach(comment => {
+                const commentElement = document.createElement("div");
+                commentElement.classList.add("comment");
+                commentElement.innerHTML = `<p><strong>${comment.username}</strong>: ${comment.text}</p>`;
+                commentList.appendChild(commentElement);
+            });
+        }
+    }
 
+    // Cargar y mostrar los posts
+    window.onload = () => {
+        const postsContainer = document.getElementById('posts-container');
+        posts.forEach((post, index) => {
+            postsContainer.innerHTML += createPost(post, index);
+            loadComments(index);
+        });
+    };
 </script>
+
 </body>
 </html>
