@@ -11,13 +11,12 @@
     <style>
         /* Estilos básicos */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Post */
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+    }
+ /* Post */
         .post {
             width: 350px;
             background-color: rgb(255, 255, 255);
@@ -53,33 +52,32 @@
 
         /* Carrusel de medios */
         .media-carousel {
-            width: 100%;
-            height: 350px;
-            display: flex;
-            overflow: hidden;
-            position: relative;
-            border-radius: 10px;
-        }
+        width: 100%;
+        height: 350px;
+        display: flex;
+        overflow: hidden;
+        position: relative;
+    }
 
-        .media-carousel .media-item {
-            display: none;
-            flex-shrink: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            text-align: center;
-        }
+    .media-carousel .media-item {
+        display: none;
+        flex-shrink: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;  /* Mantiene la proporción sin deformar la imagen */
+        text-align: center;
+    }
 
-        .media-carousel .active {
-            display: block;
-        }
+    .media-carousel .active {
+        display: block;
+    }
 
-        /* Estilo para los medios (video/audio) */
-        .media-item video,
-        .media-item audio {
-            width: 100%;
-            height: 100%;
-        }
+    /* Estilo para los medios (video/audio) */
+    .media-item video,
+    .media-item audio {
+        width: 100%;
+        height: 100%;
+    }
 
         /* Botones de acción (like, comment, share) */
         .post-actions {
@@ -87,7 +85,6 @@
             justify-content: space-around;
             padding: 10px;
         }
-
         .like-button,
         .comment-button,
         .share-button {
@@ -331,100 +328,190 @@
             link: "https://nuestra-linda-relacion.netlify.app/pagina#post-11" 
         }
         // Más publicaciones...
-    ];
+        ];
 
-    // Función para crear cada post
-    function createPost(post, index) {
-        const mediaItems = post.media.map((item, i) => {
-            if (item.type === 'image') {
-                return `<img src="${item.url}" class="media-item ${i === 0 ? 'active' : ''}" alt="Post Image" onclick="navigateCarousel(${index}, 1)">`;
-            }
-            if (item.type === 'audio') {
-                return `<audio class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, 1)">
-                            <source src="${item.url}" type="audio/mp3">
-                            Your browser does not support the audio element.
-                        </audio>`;
-            }
-            if (item.type === 'video') {
-                return `<video class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, 1)">
-                            <source src="${item.url}" type="video/mp4">
-                            Your browser does not support the video element.
-                        </video>`;
-            }
-        }).join('');
+// Función para crear cada post
+function createPost(post, index) {
+    const mediaItems = post.media.map((item, i) => {
+        if (item.type === 'image') {
+            return `<img src="${item.url}" class="media-item ${i === 0 ? 'active' : ''}" alt="Post Image" onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">`;
+        }
+        if (item.type === 'audio') {
+            return `<audio class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
+                        <source src="${item.url}" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>`;
+        }
+        if (item.type === 'video') {
+            return `<video class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
+                        <source src="${item.url}" type="video/mp4">
+                        Your browser does not support the video element.
+                    </video>`;
+        }
+    }).join('');
 
-        return `
-            <div class="post" id="post-${index}">
-                <div class="header">
-                    <img src="${post.avatar}" alt="Avatar">
-                    <div class="user-info">
-                        <p><strong>${post.username}</strong></p>
-                        <p>${post.userHandle}</p>
-                    </div>
-                </div>
-                <div class="media-carousel">
-                    ${mediaItems}
-                </div>
-                <div class="post-actions">
-                    <button class="like-button" onclick="likePost(this)">❤️</button>
-                    <button class="comment-button" onclick="toggleComments(${index})">💬</button>
-                    <button class="share-button" onclick="openSharePopup('${post.link}')">↗</button>
-                </div>
-                <div class="caption">
-                    <p><strong>${post.userHandle}</strong> ${post.caption}</p>
-                </div>
-                <div class="comments" id="comments-${index}" style="display: none;">
-                    <input type="text" placeholder="Escribe un comentario..." id="comment-input-${index}">
-                    <div class="comment-list" id="comment-list-${index}"></div>
+    return `
+        <div class="post" id="post-${index}">
+            <div class="header">
+                <img src="${post.avatar}" alt="Avatar">
+                <div class="user-info">
+                    <p><strong>${post.username}</strong></p>
+                    <p>${post.userHandle}</p>
                 </div>
             </div>
-        `;
+            <div class="media-carousel">
+                ${mediaItems}
+            </div>
+            <div class="post-actions">
+                <!-- Botón de Like -->
+                <button class="like-button" onclick="likePost(this)">❤️</button>
+                <button class="comment-button" onclick="toggleComments(${index})">💬</button>
+                <button class="share-button" onclick="openSharePopup('${post.link}')">↗</button>
+            </div>
+            <div class="caption">
+                <p><strong>${post.userHandle}</strong> ${post.caption}</p>
+            </div>
+            <div class="comments" id="comments-${index}" style="display: none;">
+                <input type="text" placeholder="Escribe un comentario..." id="comment-input-${index}" onkeydown="handleCommentKeydown(event, ${index})">
+                <div class="comment-list" id="comment-list-${index}"></div>
+            </div>
+        </div>
+    `;
+}
+
+
+// Función para navegar entre los elementos del carrusel
+function navigateCarousel(postIndex, event) {
+    const post = posts[postIndex];
+    const mediaItems = document.querySelectorAll(`#post-${postIndex} .media-item`);
+    let currentIndex = Array.from(mediaItems).findIndex(item => item.classList.contains('active'));
+
+    // Calcular la posición del clic/touch dentro del post
+    const postElement = document.getElementById(`post-${postIndex}`);
+    const postWidth = postElement.offsetWidth;
+    const clickPosition = event.clientX || event.touches[0].clientX;  // Para móvil o computadora
+
+    // Calcular si se hizo clic/tocó en la parte izquierda o derecha del post
+    const isClickRight = clickPosition > postWidth / 2;  // Si el clic está en la mitad derecha
+
+    // Determinar la nueva posición (solo hacia adelante, sin límite de retroceso)
+    let newIndex = isClickRight ? currentIndex + 1 : currentIndex - 1;
+
+    // Si el nuevo índice es mayor que el último medio, regresa al primero
+    if (newIndex >= mediaItems.length) {
+        newIndex = 0;  // Regresar al primer medio
     }
 
-    // Función para navegar entre los medios al hacer click
-    function navigateCarousel(index, direction) {
-        const mediaItems = document.querySelectorAll(`#post-${index} .media-item`);
-        let currentIndex = [...mediaItems].findIndex(item => item.classList.contains('active'));
-        currentIndex = (currentIndex + direction + mediaItems.length) % mediaItems.length;
-
-        mediaItems.forEach(item => item.classList.remove('active'));
-        mediaItems[currentIndex].classList.add('active');
+    // Si el nuevo índice es menor que 0, pasa al último medio
+    if (newIndex < 0) {
+        newIndex = mediaItems.length - 1;  // Ir al último medio
     }
 
-    // Función para abrir el popup de compartir
-    function openSharePopup(link) {
-        const sharePopup = document.getElementById('sharePopup');
-        sharePopup.style.display = 'flex';
+    // Desactivar el medio actual
+    mediaItems[currentIndex].classList.remove('active');
 
-        // Actualizar los enlaces para compartir el post específico
-        document.getElementById('share-whatsapp').href = `https://wa.me/?text=Mira la pagina 😻Nuestra linda relación😻 ${link}`;
-        document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${link}`;
-        document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=Mira la pagina 😻Nuestra linda relación😻&url=${link}`;
-        document.getElementById('share-instagram').href = `https://www.instagram.com/sharer/sharer.php?u=${link}`;
+    // Activar el nuevo medio
+    mediaItems[newIndex].classList.add('active');
+}
+
+
+// Función para manejar el evento de tecla Enter para enviar el comentario
+function handleCommentKeydown(event, postIndex) {
+    const inputField = document.getElementById(`comment-input-${postIndex}`);
+    const commentList = document.getElementById(`comment-list-${postIndex}`);
+
+    if (event.key === "Enter" && inputField.value.trim()) {
+        // Evitar salto de línea
+        event.preventDefault();
+
+        // Obtener el comentario
+        const commentText = inputField.value.trim();
+
+        // Crear el comentario con el formato deseado
+        const commentElement = document.createElement("div");
+        commentElement.classList.add("comment");
+        commentElement.innerHTML = `<p><strong>Jack&lt;3</strong>: ${commentText}</p>`;  // Formato actualizado
+        commentList.appendChild(commentElement);
+
+        // Guardar el comentario en localStorage
+        saveComment(postIndex, commentText);
+
+        // Limpiar el campo de entrada
+        inputField.value = "";
+    }
+}
+
+// Función para guardar un comentario en localStorage
+function saveComment(postIndex, commentText) {
+    let comments = JSON.parse(localStorage.getItem('comments')) || {};
+    if (!comments[postIndex]) {
+        comments[postIndex] = [];
     }
 
-    // Función para cerrar el popup de compartir
-    function closeSharePopup() {
-        const sharePopup = document.getElementById('sharePopup');
-        sharePopup.style.display = 'none';
-    }
-
-    // Insertar las publicaciones en el contenedor
-    const postsContainer = document.getElementById('posts-container');
-    posts.forEach((post, index) => {
-        postsContainer.innerHTML += createPost(post, index);
+    // Guardamos el comentario con el nombre de usuario
+    comments[postIndex].push({
+        username: "Jack<3",  // El nombre del usuario que comentó
+        text: commentText    // El texto del comentario
     });
 
-    // Función para dar like
-    function likePost(button) {
-        button.classList.toggle('liked');
-    }
+    // Guardamos todo de vuelta en localStorage
+    localStorage.setItem('comments', JSON.stringify(comments));
+}
 
-    // Función para mostrar u ocultar los comentarios
-    function toggleComments(index) {
-        const commentSection = document.getElementById(`comments-${index}`);
-        commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
+// Función para cargar los comentarios guardados en localStorage
+function loadComments(postIndex) {
+    const comments = JSON.parse(localStorage.getItem('comments')) || {};
+    const commentList = document.getElementById(`comment-list-${postIndex}`);
+
+    // Si hay comentarios para esta publicación
+    if (comments[postIndex]) {
+        comments[postIndex].forEach(comment => {
+            const commentElement = document.createElement("div");
+            commentElement.classList.add("comment");
+
+            // Mostrar el nombre del usuario y el comentario
+            commentElement.innerHTML = `<p><strong>${comment.username}</strong>: ${comment.text}</p>`;
+            commentList.appendChild(commentElement);
+        });
     }
+}
+
+
+// Insertar las publicaciones en el contenedor
+const postsContainer = document.getElementById('posts-container');
+posts.forEach((post, index) => {
+    postsContainer.innerHTML += createPost(post, index);
+    loadComments(index);  // Cargar los comentarios previos de localStorage
+});
+
+// Función para manejar el like en los posts
+function likePost(button) {
+    button.classList.toggle('liked');  // Alterna la clase "liked" cuando se hace clic
+}
+
+
+// Función para mostrar u ocultar los comentarios
+function toggleComments(index) {
+    const commentSection = document.getElementById(`comments-${index}`);
+    commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
+}
+
+// Función para abrir el popup de compartir
+function openSharePopup(link) {
+    const sharePopup = document.getElementById('sharePopup');
+    sharePopup.style.display = 'flex';
+
+    // Actualizar los enlaces para compartir el post específico
+    document.getElementById('share-whatsapp').href = `https://wa.me/?text=Mira la pagina 😻Nuestra linda relación😻 ${link}`;
+    document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${link}`;
+    document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=Mira la pagina 😻Nuestra linda relación😻&url=${link}`;
+    document.getElementById('share-instagram').href = `https://www.instagram.com/sharer/sharer.php?u=${link}`;
+}
+
+// Función para cerrar el popup de compartir
+function closeSharePopup() {
+    const sharePopup = document.getElementById('sharePopup');
+    sharePopup.style.display = 'none';
+}
+
 </script>
-</body>
-</html>
