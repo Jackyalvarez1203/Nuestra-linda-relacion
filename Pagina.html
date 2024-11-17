@@ -374,7 +374,7 @@ function createPost(post, index) {
                 <!-- Botón de Like -->
                 <button class="like-button" onclick="likePost(this)">❤️</button>
                 <button class="comment-button" onclick="toggleComments(${index})">💬</button>
-                <button class="share-button" onclick="openSharePopup('${post.link}')">↗</button>
+                <button class="share-button" onclick="openSharePopup('${post.link}')">↪</button>
             </div>
             <div class="caption">
                 <p><strong>${post.userHandle}</strong> ${post.caption}</p>
@@ -502,17 +502,25 @@ posts.forEach((post, index) => {
     loadComments(index);  // Cargar los comentarios previos de localStorage
 });
 
-// Función para manejar el like en los posts
-function likePost(button) {
-    button.classList.toggle('liked');  // Alterna la clase "liked" cuando se hace clic
-}
+// Al cargar la página, mostrar solo el post correspondiente al fragmento de la URL
+document.addEventListener('DOMContentLoaded', function() {
+    const postHash = window.location.hash;  // Obtener el fragmento de la URL
+    const postIndex = postHash ? parseInt(postHash.replace('#post-', '')) : -1;  // Extraer el índice del post
 
+    if (postIndex >= 0 && postIndex < posts.length) {
+        // Ocultar todos los posts
+        const allPosts = document.querySelectorAll('.post');
+        allPosts.forEach(post => {
+            post.style.display = 'none';
+        });
 
-// Función para mostrar u ocultar los comentarios
-function toggleComments(index) {
-    const commentSection = document.getElementById(`comments-${index}`);
-    commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
-}
+        // Mostrar solo el post correspondiente
+        const specificPost = document.getElementById(`post-${postIndex}`);
+        if (specificPost) {
+            specificPost.style.display = 'block';
+        }
+    }
+});
 
 // Función para abrir el popup de compartir
 function openSharePopup(link) {
@@ -533,3 +541,5 @@ function closeSharePopup() {
 }
 
 </script>
+</body>
+</html>
