@@ -14,6 +14,7 @@
             height: 100vh;
             margin: 0;
         }
+
         .container {
             background-color: white;
             padding: 20px;
@@ -21,14 +22,17 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 300px;
         }
+
         h2 {
             text-align: center;
             margin-bottom: 20px;
         }
+
         label {
             display: block;
             margin: 10px 0 5px;
         }
+
         input[type="text"], input[type="password"] {
             width: 100%;
             padding: 8px;
@@ -36,6 +40,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         input[type="submit"] {
             width: 100%;
             padding: 10px;
@@ -45,9 +50,71 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+
+        /* Estilo para la ventana emergente de error */
+        .error-popup {
+            display: none; /* Oculta la ventana por defecto */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro con opacidad */
+            z-index: 1000; /* Asegura que la ventana esté por encima de otros elementos */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .error-popup-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 80%;
+        }
+
+        .error-popup h2 {
+            color: #d9534f;
+        }
+
+        .error-popup p {
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .error-popup button {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .error-popup button:hover {
+            background-color: #c9302c;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
     </style>
 </head>
 <body>
@@ -61,6 +128,16 @@
             <input type="password" id="password" name="password" required placeholder="Contraseña">
             <input type="submit" value="Iniciar sesión">
         </form>
+    </div>
+
+    <!-- Ventana emergente de error -->
+    <div id="errorPopup" class="error-popup">
+        <div class="error-popup-content">
+            <span class="close-btn" onclick="closeErrorPopup()">&times;</span>
+            <h2>¡Error!</h2>
+            <p>Usuario o contraseña incorrectos. Por favor, inténtalo de nuevo.</p>
+            <button onclick="closeErrorPopup()">Cerrar</button>
+        </div>
     </div>
 
     <script>
@@ -80,9 +157,21 @@
                 localStorage.setItem("loggedInUser", username);
                 window.location.href = "pagina.html"; // Redirigir a la página de los posts
             } else {
-                alert("Credenciales incorrectas");
+                showErrorPopup(); // Muestra el popup si las credenciales son incorrectas
             }
             return false; // Para evitar el comportamiento predeterminado del formulario
+        }
+
+        // Función para mostrar la ventana emergente de error
+        function showErrorPopup() {
+            const errorPopup = document.getElementById('errorPopup');
+            errorPopup.style.display = 'flex';  // Muestra la ventana emergente
+        }
+
+        // Función para cerrar la ventana emergente
+        function closeErrorPopup() {
+            const errorPopup = document.getElementById('errorPopup');
+            errorPopup.style.display = 'none';  // Oculta la ventana emergente
         }
     </script>
 
