@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>😻Nuestra linda relación😻</title>
-    <link rel="icon" href="" type="image/x-icon">
-    <link rel="stylesheet" href="popup.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,55 +22,57 @@
         }
 
         .header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 5px; /* Reduce el espacio debajo de la cabecera */
+}
+
+.header img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 5px; /* Reduce el espacio entre la imagen y los textos */
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px; /* Reduce el espacio izquierdo de los textos */
+}
+
+.user-info p {
+    margin: 0; /* Elimina el margen para que no haya espacio innecesario */
+    padding: 0;
+}
+
+.user-info p:first-child {
+    font-weight: bold; /* Deja el nombre en negrita */
+}
+
+
+        .media-carousel {
+            width: 100%;
+            height: 350px;
             display: flex;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
+            overflow: hidden;
+            position: relative;
         }
 
-        .header img {
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
+        .media-carousel .media-item {
+            display: none;
+            flex-shrink: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            text-align: center;
         }
 
-        .header .user-info {
-            display: flex;
-            flex-direction: column;
+        .media-carousel .active {
+            display: block;
         }
 
-        .header .user-info p {
-            margin: 0;
-        }
-
-    .media-carousel {
-        width: 100%;
-        height: 350px;
-        display: flex;
-        overflow: hidden;
-        position: relative;
-    }
-
-    .media-carousel .media-item {
-        display: none;
-        flex-shrink: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;  /* Mantiene la proporción sin deformar la imagen */
-        text-align: center;
-    }
-
-    .media-carousel .active {
-        display: block;
-    }
-
-    /* Estilo para los medios (video/audio) */
-    .media-item video,
-    .media-item audio {
-        width: 100%;
-        height: 100%;
-    }
         .post-actions {
             display: flex;
             justify-content: space-around;
@@ -100,10 +99,6 @@
 
         .caption {
             padding: 10px;
-        }
-
-        .caption p {
-            margin: 0;
         }
 
         .comments {
@@ -133,95 +128,22 @@
             margin: 0;
         }
 
-        .share-popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .share-popup .popup-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .share-popup .popup-content a {
-            margin: 10px;
-            font-size: 20px;
-            text-decoration: none;
-            color: #007bff;
-        }
-
-        .share-popup .popup-content .social-icons {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .share-popup .popup-content .social-icons a {
-            font-size: 40px;
-            color: #333;
-            transition: transform 0.3s ease;
-        }
-
-        .share-popup .popup-content .social-icons a:hover {
-            transform: scale(1.1);
-        }
-
-        .share-popup .popup-content button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #ff4747;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .share-popup .popup-content button:hover {
-            background-color: #ff1f1f;
-        }
     </style>
 </head>
 <body>
 
 <div id="posts-container"></div>
 
-<div class="share-popup" id="sharePopup">
-    <div class="popup-content">
-        <p>¡Comparte esta publicación!</p>
-        <div class="social-icons">
-            <a href="#" id="share-whatsapp" onclick="shareOnWhatsApp()">
-                <i class="fab fa-whatsapp"></i>
-            </a>
-            <a href="#" id="share-facebook" onclick="shareOnFacebook()">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a href="#" id="share-twitter" onclick="shareOnTwitter()">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#" id="share-instagram" onclick="shareOnInstagram()">
-                <i class="fab fa-instagram"></i>
-            </a>
-        </div>
-        <button onclick="closeSharePopup()">Cerrar</button>
-    </div>
-</div>
-
 <script>
-     const posts = [
+    // Obtener el usuario logueado desde localStorage
+    const loggedInUser = localStorage.getItem("loggedInUser");
+
+    if (!loggedInUser) {
+        // Si no hay usuario logueado, redirigir a la página de inicio (index.html)
+        window.location.href = "index.html";  // Redirigir a index.html
+    }
+
+    const posts = [
          {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
@@ -322,27 +244,32 @@
             caption: "Amo los dias que hacemos llamada aunque me quede dormido a la mitad de ella <br> Amo que escuches todas las pendejadas que digo🥹 <br> Amo cada minuto donde hablo contigo, donde escucho tu linda voz, amo todo de ti <3",
             link: "https://nuestra-linda-relacion.netlify.app/pagina#post-12" 
         }
-
     ];
 
-    let activeMediaIndex = 0; // Índice de la imagen/media activa en el carrusel
+    let touchTimeout = null;  // Variable para el tiempo de retraso
 
     function createPost(post, index) {
         const mediaItems = post.media.map((item, i) => {
             if (item.type === 'image') {
-                return `<img src="${item.url}" class="media-item ${i === 0 ? 'active' : ''}" alt="Post Image" onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">`;
+                return `
+                    <img src="${item.url}" class="media-item ${i === 0 ? 'active' : ''}" alt="Post Image" onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
+                `;
             }
             if (item.type === 'audio') {
-                return `<audio class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
-                            <source src="${item.url}" type="audio/mp3">
-                            Your browser does not support the audio element.
-                        </audio>`;
+                return `
+                    <audio class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
+                        <source src="${item.url}" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                `;
             }
             if (item.type === 'video') {
-                return `<video class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
-                            <source src="${item.url}" type="video/mp4">
-                            Your browser does not support the video element.
-                        </video>`;
+                return `
+                    <video class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
+                        <source src="${item.url}" type="video/mp4">
+                        Your browser does not support the video element.
+                    </video>
+                `;
             }
         }).join('');
 
@@ -373,50 +300,49 @@
             </div>
         `;
     }
-    let touchTimeout = null;  // Variable para el tiempo de retraso
 
-// Función para navegar entre los elementos del carrusel
-function navigateCarousel(postIndex, event) {
-    const post = posts[postIndex];
-    const mediaItems = document.querySelectorAll(`#post-${postIndex} .media-item`);
-    let currentIndex = Array.from(mediaItems).findIndex(item => item.classList.contains('active'));
+    // Función para navegar entre los elementos del carrusel
+    function navigateCarousel(postIndex, event) {
+        const post = posts[postIndex];
+        const mediaItems = document.querySelectorAll(`#post-${postIndex} .media-item`);
+        let currentIndex = Array.from(mediaItems).findIndex(item => item.classList.contains('active'));
 
-    // Calcular la posición del clic/touch dentro del post
-    const postElement = document.getElementById(`post-${postIndex}`);
-    const postWidth = postElement.offsetWidth;
-    const clickPosition = event.clientX || event.touches[0].clientX;  // Para móvil o computadora
+        // Calcular la posición del clic/touch dentro del post
+        const postElement = document.getElementById(`post-${postIndex}`);
+        const postWidth = postElement.offsetWidth;
+        const clickPosition = event.clientX || event.touches[0].clientX;
 
-    // Calcular si se hizo clic/tocó en la parte izquierda o derecha del post
-    const isClickRight = clickPosition > postWidth / 2;  // Si el clic está en la mitad derecha
+        // Calcular si se hizo clic/tocó en la parte izquierda o derecha del post
+        const isClickRight = clickPosition > postWidth / 2;
 
-    // Si ya hay un timeout pendiente, evitar ejecutar la función hasta que pase
-    if (touchTimeout) {
-        clearTimeout(touchTimeout);  // Limpiar el timeout anterior
+        // Si ya hay un timeout pendiente, evitar ejecutar la función hasta que pase
+        if (touchTimeout) {
+            clearTimeout(touchTimeout);
+        }
+
+        // Agregar un retraso para pasar al siguiente item
+        touchTimeout = setTimeout(() => {
+            // Determinar la nueva posición (solo hacia adelante, sin límite de retroceso)
+            let newIndex = isClickRight ? currentIndex + 1 : currentIndex - 1;
+
+            // Si el nuevo índice es mayor que el último medio, regresa al primero
+            if (newIndex >= mediaItems.length) {
+                newIndex = 0;  // Regresar al primer medio
+            }
+
+            // Si el nuevo índice es menor que 0, pasa al último medio
+            if (newIndex < 0) {
+                newIndex = mediaItems.length - 1;
+            }
+
+            // Desactivar el medio actual
+            mediaItems[currentIndex].classList.remove('active');
+
+            // Activar el nuevo medio
+            mediaItems[newIndex].classList.add('active');
+        }, 300);  // Retraso de 300ms
     }
 
-    // Agregar un retraso para pasar al siguiente item
-    touchTimeout = setTimeout(() => {
-        // Determinar la nueva posición (solo hacia adelante, sin límite de retroceso)
-        let newIndex = isClickRight ? currentIndex + 1 : currentIndex - 1;
-
-        // Si el nuevo índice es mayor que el último medio, regresa al primero
-        if (newIndex >= mediaItems.length) {
-            newIndex = 0;  // Regresar al primer medio
-        }
-
-        // Si el nuevo índice es menor que 0, pasa al último medio
-        if (newIndex < 0) {
-            newIndex = mediaItems.length - 1;  // Ir al último medio
-        }
-
-        // Desactivar el medio actual
-        mediaItems[currentIndex].classList.remove('active');
-
-        // Activar el nuevo medio
-        mediaItems[newIndex].classList.add('active');
-    }, 300);  // Retraso de 200ms
-}
- 
     function openSharePopup(link) {
         const sharePopup = document.getElementById('sharePopup');
         sharePopup.style.display = 'flex';
@@ -446,9 +372,9 @@ function navigateCarousel(postIndex, event) {
             const commentText = commentInput.value.trim();
 
             if (commentText !== '') {
-                saveComment(postIndex, commentText);  // Guardar el comentario
-                loadComments(postIndex);              // Cargar los comentarios nuevamente
-                commentInput.value = '';              // Limpiar el campo de comentario
+                saveComment(postIndex, commentText);
+                loadComments(postIndex);
+                commentInput.value = '';
             }
         }
     }
@@ -458,7 +384,7 @@ function navigateCarousel(postIndex, event) {
         if (!comments[postIndex]) {
             comments[postIndex] = [];
         }
-        comments[postIndex].push({ username: 'Jack<3', text: commentText });
+        comments[postIndex].push({ username: loggedInUser, text: commentText });
         localStorage.setItem('comments', JSON.stringify(comments));
     }
 

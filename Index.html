@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar sesión / Registro</title>
+    <title>Iniciar sesión</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,7 +29,7 @@
             display: block;
             margin: 10px 0 5px;
         }
-        input[type="text"], input[type="password"], input[type="email"] {
+        input[type="text"], input[type="password"] {
             width: 100%;
             padding: 8px;
             margin-bottom: 15px;
@@ -48,114 +48,43 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
-        .switch-form {
-            text-align: center;
-            margin-top: 10px;
-        }
-        .switch-form a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        .switch-form a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <!-- Formulario de inicio de sesión -->
-        <div id="login-form">
-            <h2>Iniciar sesión</h2>
-            <form id="login" action="javascript:void(0);" onsubmit="login()">
-                <label for="username">Usuario</label>
-                <input type="text" id="username" name="username" required placeholder="Ingrese su usuario">
-
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" required placeholder="Ingrese su contraseña">
-
-                <input type="submit" value="Iniciar sesión">
-            </form>
-
-            <div class="switch-form">
-                <p>¿No tienes una cuenta? <a href="#" id="show-register">Regístrate aquí</a></p>
-            </div>
-        </div>
-
-        <!-- Formulario de registro -->
-        <div id="register-form" style="display:none;">
-            <h2>Registrarse</h2>
-            <form action="javascript:void(0);" onsubmit="register()">
-                <label for="username-reg">Usuario</label>
-                <input type="text" id="username-reg" name="username" required placeholder="Elige un usuario">
-
-                <label for="email">Correo electrónico</label>
-                <input type="email" id="email" name="email" required placeholder="Ingrese su correo electrónico">
-
-                <label for="password-reg">Contraseña</label>
-                <input type="password" id="password-reg" name="password" required placeholder="Elige una contraseña">
-
-                <label for="confirm-password">Confirmar contraseña</label>
-                <input type="password" id="confirm-password" name="confirm-password" required placeholder="Repite la contraseña">
-
-                <input type="submit" value="Registrarse">
-            </form>
-
-            <div class="switch-form">
-                <p>¿Ya tienes una cuenta? <a href="#" id="show-login">Inicia sesión aquí</a></p>
-            </div>
-        </div>
+        <h2>Iniciar sesión</h2>
+        <form id="login" onsubmit="return login()">
+            <label for="username">Usuario</label>
+            <input type="text" id="username" name="username" required placeholder="Usuario (Jack<3 o Markiss<3)">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" required placeholder="Contraseña">
+            <input type="submit" value="Iniciar sesión">
+        </form>
     </div>
+
     <script>
-        // Cambiar entre el formulario de login y registro
-        document.getElementById('show-register').addEventListener('click', function() {
-            document.getElementById('login-form').style.display = 'none';
-            document.getElementById('register-form').style.display = 'block';
-        });
-    
-        document.getElementById('show-login').addEventListener('click', function() {
-            document.getElementById('register-form').style.display = 'none';
-            document.getElementById('login-form').style.display = 'block';
-        });
-    
-        // Función para simular el inicio de sesión y redirigir a Pagina.html
+        const validUsers = [
+            { username: "Markiss<3", password: "20122006" },
+            { username: "Jack<3", password: "03122008" }
+        ];
+
         function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-    
-            // Usuarios y contraseñas válidas
-            const validUsers = [
-                { username: "Markiss<3", password: "20122006" },
-                { username: "Jack<3", password: "03122008" }
-            ];
-    
-            // Verificar si las credenciales coinciden con algún usuario válido
+
             const userValid = validUsers.find(user => user.username === username && user.password === password);
-    
+
             if (userValid) {
-                window.location.href = "Pagina.html";
+                // Guardar el usuario en localStorage
+                localStorage.setItem("loggedInUser", username);
+                window.location.href = "pagina.html"; // Redirigir a la página de los posts
             } else {
-                alert("Usuario o contraseña incorrectos.");
+                alert("Credenciales incorrectas");
             }
-        }
-    
-        // Función para simular el registro y redirigir al formulario de login
-        function register() {
-            // Obtener los valores del formulario de registro
-            const username = document.getElementById('username-reg').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password-reg').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
-    
-            // Validación simple para asegurarse de que la contraseña y la confirmación coinciden
-            if (password === confirmPassword && username && email) {
-                // Al registrarse correctamente, mostrar el formulario de login
-                alert("Registro exitoso. Ahora puedes iniciar sesión.");
-                document.getElementById('register-form').style.display = 'none';
-                document.getElementById('login-form').style.display = 'block';
-            } else {
-                alert("Las contraseñas no coinciden o faltan campos. Intenta de nuevo.");
-            }
+            return false; // Para evitar el comportamiento predeterminado del formulario
         }
     </script>
+
 </body>
 </html>
