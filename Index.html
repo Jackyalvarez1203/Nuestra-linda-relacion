@@ -105,31 +105,39 @@
             </div>
         </div>
     </div>
-
     <script>
         // Cambiar entre el formulario de login y registro
         document.getElementById('show-register').addEventListener('click', function() {
             document.getElementById('login-form').style.display = 'none';
             document.getElementById('register-form').style.display = 'block';
         });
-
+    
         document.getElementById('show-login').addEventListener('click', function() {
             document.getElementById('register-form').style.display = 'none';
             document.getElementById('login-form').style.display = 'block';
         });
-
+    
         // Función para simular el inicio de sesión y redirigir a Pagina.html
         function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-
-            if (username && password) {
+    
+            // Usuarios y contraseñas válidas
+            const validUsers = [
+                { username: "Markiss<3", password: "20122006" },
+                { username: "Jack<3", password: "03122008" }
+            ];
+    
+            // Verificar si las credenciales coinciden con algún usuario válido
+            const userValid = validUsers.find(user => user.username === username && user.password === password);
+    
+            if (userValid) {
                 window.location.href = "Pagina.html";
             } else {
-                alert("Por favor ingrese un usuario y contraseña válidos.");
+                alert("Usuario o contraseña incorrectos.");
             }
         }
-
+    
         // Función para simular el registro y redirigir al formulario de login
         function register() {
             // Obtener los valores del formulario de registro
@@ -137,7 +145,7 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password-reg').value;
             const confirmPassword = document.getElementById('confirm-password').value;
-
+    
             // Validación simple para asegurarse de que la contraseña y la confirmación coinciden
             if (password === confirmPassword && username && email) {
                 // Al registrarse correctamente, mostrar el formulario de login
@@ -149,6 +157,5 @@
             }
         }
     </script>
-
 </body>
 </html>
