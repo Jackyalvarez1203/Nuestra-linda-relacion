@@ -37,10 +37,7 @@
 
     <script>
         document.getElementById('login-form').addEventListener('submit', function(event) {
-    console.log("Formulario enviado");
-    event.preventDefault();
-    // Resto del código...
-});
+            event.preventDefault(); // Evitar que se recargue la página
 
             // Obtener los valores de usuario y contraseña
             const username = document.getElementById('username').value;
@@ -52,9 +49,9 @@
                 "Markiss<3": "20122006"
             };
 
-            // Verificar si el usuario y la contraseña coinciden
+            // Verificar las credenciales
             if (validUsers[username] && validUsers[username] === password) {
-                // Guardar la sesión en localStorage
+                // Guardar el usuario en localStorage
                 localStorage.setItem('username', username);
                 
                 // Redirigir a pagina.html
