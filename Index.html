@@ -36,9 +36,11 @@
     </div>
 
     <script>
-        // Función para manejar el inicio de sesión
         document.getElementById('login-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Evitar que el formulario se envíe y recargue la página
+    console.log("Formulario enviado");
+    event.preventDefault();
+    // Resto del código...
+});
 
             // Obtener los valores de usuario y contraseña
             const username = document.getElementById('username').value;
