@@ -366,14 +366,82 @@ function createPost(post, index) {
                     <button class="share-button" onclick="openSharePopup('${post.link}')">↪</button>
                 </div>
                 <div class="caption">
+                script>
+    // Crear posts
+    const postsContainer = document.getElementById('posts-container');
+
+    posts.forEach((post, index) => {
+        postsContainer.innerHTML += `
+            <div class="post" id="post-${index}">
+                <div class="header">
+                    <img src="${post.avatar}" alt="Avatar">
+                    <div class="user-info">
+                        <p><strong>${post.username}</strong></p>
+                        <p>${post.userHandle}</p>
+                    </div>
+                </div>
+                <div class="media-carousel" id="carousel-${index}">
+                    ${post.media.map((item, i) => `
+                        <${item.type === 'image' ? 'img' : item.type}
+                            src="${item.url}" 
+                            class="media-item ${i === 0 ? 'active' : ''}" 
+                            alt="Media Item" 
+                            ${item.type === 'audio' || item.type === 'video' ? 'controls' : ''}
+                            onclick="navigateCarousel(${index})"
+                        ></${item.type === 'image' ? 'img' : item.type}>
+                    `).join('')}
+                </div>
+                <div class="post-actions">
+                    <button class="like-button" onclick="likePost(this)">❤</button>
+                    <button class="comment-button" onclick="toggleComments(${index})">💬</button>
+                    <button class="share-button" onclick="openSharePopup('${post.link}')">↪</button>
+                </div>
+                <div class="caption">
                     <p><strong>${post.userHandle}</strong> ${post.caption}</p>
-</div>
+                </div>
+                <div class="comments" id="comments-${index}" style="display: none;">
+                    <input 
+                        id="comment-input-${index}" 
+                        placeholder="Escribe un comentario y presiona Enter..." 
+                        onkeydown="handleCommentKeydown(event, ${index})"
+                    >
+                    <div class="comment-list" id="comment-list-${index}"></div>
+                </div>
+            </div>
         `;
+    });
+
+    // Función para manejar los comentarios
+    function handleCommentKeydown(event, index) {
+        if (event.key === 'Enter') {
+            const commentInput = document.getElementById(`comment-input-${index}`);
+            const commentList = document.getElementById(`comment-list-${index}`);
+
+            if (commentInput.value.trim() !== '') {
+                const newComment = document.createElement('div');
+                newComment.classList.add('comment');
+                newComment.innerHTML = `<p>${commentInput.value}</p>`;
+                commentList.appendChild(newComment);
+
+                commentInput.value = ''; // Limpiar el campo
+            }
+        }
     }
-function openSharePopup(link) {
+
+    function toggleComments(index) {
+        const commentsSection = document.getElementById(`comments-${index}`);
+        commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function likePost(button) {
+        button.classList.toggle('liked');
+    }
+
+    function openSharePopup(link) {
         const sharePopup = document.getElementById('sharePopup');
         sharePopup.style.display = 'flex';
-document.getElementById('share-whatsapp').href = `https://wa.me/?text=${encodeURIComponent(link)}`;
+
+        document.getElementById('share-whatsapp').href = `https://wa.me/?text=${encodeURIComponent(link)}`;
         document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`;
         document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(link)}`;
         document.getElementById('share-instagram').href = `https://www.instagram.com/`;
@@ -383,41 +451,19 @@ document.getElementById('share-whatsapp').href = `https://wa.me/?text=${encodeUR
         document.getElementById('sharePopup').style.display = 'none';
     }
 
-    function likePost(button) {
-        button.classList.toggle('liked');
-    }
-function toggleComments(index) {
-        const commentsSection = document.getElementById(`comments-${index}`);
-        commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
-    }
-function handleCommentKeydown(event, index) {
-        if (event.key === 'Enter') {
-            const commentText = document.getElementById(`comment-input-${index}`).value;
-            if (commentText) {
-                const commentList = document.getElementById(`comment-list-${index}`);
-                commentList.innerHTML += `<div class="comment"><p>${commentText}</p></div>`;
-                document.getElementById(`comment-input-${index}`).value = '';
-            }
+    function navigateCarousel(index) {
+        const carousel = document.getElementById(`carousel-${index}`);
+        const activeItem = carousel.querySelector('.active');
+        let nextItem = activeItem.nextElementSibling;
+
+        if (!nextItem) {
+            nextItem = carousel.firstElementChild;
         }
+
+        activeItem.classList.remove('active');
+        nextItem.classList.add('active');
     }
-function navigateCarousel(index, event) {
-        clearTimeout(touchTimeout);
-touchTimeout = setTimeout(() => {
-            const carousel = document.getElementById(`carousel-${index}`);
-            const activeItem = carousel.querySelector('.active');
-            let nextItem = activeItem.nextElementSibling;
-            if (!nextItem) {
-                nextItem = carousel.firstElementChild;
-            }
-            activeItem.classList.remove('active');
-            nextItem.classList.add('active');
-        }, 100);
-    }
-// Generar los posts en la página
-    const postsContainer = document.getElementById('posts-container');
-    posts.forEach((post, index) => {
-        postsContainer.innerHTML += createPost(post, index);
-    });
+
 </script>
 
 </body>
