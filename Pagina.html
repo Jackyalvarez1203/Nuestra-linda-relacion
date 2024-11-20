@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -249,8 +249,10 @@
     </div>
             
         <script>
-    const post = [ 
-        {
+        // Obtener el usuario logueado desde localStorage
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    const posts = [
+    {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
             avatar: "perfil.jpg",
