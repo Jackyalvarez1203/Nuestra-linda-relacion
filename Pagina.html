@@ -427,21 +427,23 @@
         button.classList.toggle('liked');
     }
 
-    function toggleComments(index) {
-        const commentsSection = document.getElementById(`comments-${index}`);
-        commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
-    }
+    unction toggleComments(index) {
+    const commentsSection = document.getElementById(`comments-${index}`);
+    commentsSection.style.display = commentsSection.style.display === "none" ? "block" : "none";
+}
 
-    function handleCommentKeydown(event, index) {
-        if (event.key === 'Enter') {
-            const commentText = document.getElementById(`comment-input-${index}`).value;
-            if (commentText) {
-                const commentList = document.getElementById(`comment-list-${index}`);
-                commentList.innerHTML += `<div class="comment"><p>${commentText}</p></div>`;
-                document.getElementById(`comment-input-${index}`).value = '';
-            }
+function handleCommentKeydown(event, index) {
+    if (event.key === "Enter") {
+        const commentInput = document.getElementById(`comment-input-${index}`);
+        const commentText = commentInput.value.trim();
+        if (commentText) {
+            const commentList = document.getElementById(`comment-list-${index}`);
+            commentList.innerHTML += `<div class="comment"><strong>${loggedInUser}:</strong> ${commentText}</div>`;
+            commentInput.value = "";
         }
     }
+}
+
 
     function navigateCarousel(index, event) {
         clearTimeout(touchTimeout);
