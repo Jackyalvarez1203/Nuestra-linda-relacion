@@ -39,23 +39,16 @@
         document.getElementById('login-form').addEventListener('submit', function(event) {
             event.preventDefault(); // Evitar que se recargue la página
 
-            // Obtener los valores de usuario y contraseña
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // Definir las credenciales válidas
             const validUsers = {
                 "Jack<3": "03122008",
                 "Markiss<3": "20122006"
             };
 
-            // Verificar las credenciales
             if (validUsers[username] && validUsers[username] === password) {
-                // Guardar el usuario en localStorage
-                localStorage.setItem('username', username);
-                
-                // Redirigir a pagina.html
-                window.location.href = "Pagina.html";
+                window.location.href = "Pagina.html"; // Cambiar a la ruta correcta si es necesario
             } else {
                 alert("Usuario o contraseña incorrectos.");
             }
