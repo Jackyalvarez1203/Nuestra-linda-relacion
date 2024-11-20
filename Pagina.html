@@ -205,8 +205,7 @@
     </style>
 </head>
 <body>
-
-<div id="posts-container"></div>
+     <div id="posts-container"></div>
 <div id="sharePopup">
     <div class="share-popup-content">
         <button class="close-popup" onclick="closeSharePopup()">×</button>
@@ -226,11 +225,10 @@
             </a>
         </div>
     </div>
-<script>
-    // Obtener el usuario logueado desde localStorage
-    const loggedInUser = localStorage.getItem("loggedInUser");
+</div>
 
-    const posts = [
+<script>
+        const posts = [
 {
             username: "Jack <3",
             userHandle: "@Jack_morning_star_",
@@ -322,51 +320,6 @@
             link: "https://nuestra-linda-relacion.netlify.app/pagina#post-12" 
         }
 ];
-let touchTimeout = null;
-function createPost(post, index) {
-        const mediaItems = post.media.map((item, i) => {
-            if (item.type === 'image') {
-                return `
-                    <img src="${item.url}" class="media-item ${i === 0 ? 'active' : ''}" alt="Post Image" onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
-                `;
-            }
-            if (item.type === 'audio') {
-                return `
-                    <audio class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
-                        <source src="${item.url}" type="audio/mp3">
-                        Your browser does not support the audio element.
-                    </audio>
-                `;
-            }
-            if (item.type === 'video') {
-                return `
-                    <video class="media-item ${i === 0 ? 'active' : ''}" controls onclick="navigateCarousel(${index}, event)" ontouchstart="navigateCarousel(${index}, event)">
-                        <source src="${item.url}" type="video/mp4">
-                        Your browser does not support the video element.
-                    </video>
-                `;
-            }
-}).join('');
-
-        return `
-            <div class="post" id="post-${index}">
-                <div class="header">
-                    <img src="${post.avatar}" alt="Avatar">
-                    <div class="user-info">
-                        <p><strong>${post.username}</strong></p>
-                        <p>${post.userHandle}</p>
-                    </div>
-                </div>
-                <div class="media-carousel" id="carousel-${index}">
-                    ${mediaItems}
-                </div>
-                <div class="post-actions">
-                    <button class="like-button" onclick="likePost(this)">❤</button>
-                    <button class="comment-button" onclick="toggleComments(${index})">💬</button>
-                    <button class="share-button" onclick="openSharePopup('${post.link}')">↪</button>
-                </div>
-                <div class="caption">
-                script>
     // Crear posts
     const postsContainer = document.getElementById('posts-container');
 
@@ -463,8 +416,6 @@ function createPost(post, index) {
         activeItem.classList.remove('active');
         nextItem.classList.add('active');
     }
-
-</script>
-
+</script>       
 </body>
     </html>
